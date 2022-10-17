@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 
 // For LocalHost
-// $config['base_url'] = 'http://localhost/ StoryTellerPrePostTest/';
+// $config['base_url'] = 'http://localhost/StoryTellerPrePostTest/';
 
 // For Over LAN WiFi 56
 $config['base_url'] = 'http://192.168.1.38/StoryTellerPrePostTest/';

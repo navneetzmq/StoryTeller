@@ -228,7 +228,7 @@ class CompanyAdminModel extends CI_Model {
             ];
             // Update in masterStaff
             $this->db->where('staffId', $staffId);
-            $this->db->update('masterStaff', $data);
+            $this->db->update('masterStaff', $data);    
 
             // Update in staffLoginCredentials
             $this->db->where('staffId', $staffId);

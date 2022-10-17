@@ -13,14 +13,14 @@
                 <?php echo '<p class="alert alert-success mt-3 text-center" id="add">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>' 
+                </button>'
                 .$this->session->flashdata('add_company_admin') . '</p>'; ?>
                 <?php } $this->session->unset_userdata('add_company_admin'); //unset session ?>
 
                 <div class="card">
                     <div class="card-body">
                     <!-- form -->
-                        <form method="POST" action="<?= base_url('SuperAdminController/saveQuestionData');?>">
+                        <form method="POST" action="<?= base_url('SuperAdminController/saveQuestionData');?>" enctype="multipart/form-data">
 
                             <!-- Dropdown to select Story -->
                             
@@ -45,15 +45,30 @@
                             </div>
 
                             <div id="hideForm">
+                                <!-- Question text -->
                                 <div class="form-group">
-                                    <label for="">Question Text</label>
+                                    <label for=""><strong>Question Text</strong></label>
                                     <input type="text" class="form-control" id="questionId" name="question" placeholder="">
                                     <div id="err_question"></div>
                                 </div>
 
+                                <!-- Question Image -->
+                                <div class="row">
+                                    <div class="form-group col-lg-5">
+                                        <label for="questionImage">Image</label>
+                                        <input type="file" accept="image/*" class="form-control-file form-control-sm" id="questionImage" name="questionImage">
+                                    </div>
+
+                                    <!-- Question Audio -->
+                                    <div class="form-group col-lg-5">
+                                        <label for="questionAudio">Audio</label>
+                                        <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="questionAudio" id="questionAudio">
+                                    </div>
+                                </div>
+
                                 <!-- How many Options the Question has ? -->
                                 <div class="form-group" id="radioBtn">
-                                    <label for="">How many options to answer?</label>   
+                                    <label for="">How many options to answer?</label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" value="2" name="option" id="id2" onchange="openOptionField(2);">
                                         <label class="form-check-label" for="id2">Two</label>
@@ -63,6 +78,7 @@
                                         <input class="form-check-input" type="radio" value="3" name="option" id="id3" onchange="openOptionField(3);">
                                         <label class="form-check-label" for="id3">Three</label>
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" value="4" name="option" id="id4" onchange="openOptionField(4);">
                                         <label class="form-check-label" for="id4">Four</label>
@@ -77,34 +93,114 @@
 
                                 <!------------- options for question ------------->
 
+                                <!-- Option A Text-->
                                 <div class="form-group" id="optionArea1" style="display: none;">
-                                    <label for="">Option-A</label>
+                                    <label for=""><strong>Option-A</strong></label>
                                     <input type="text" class="form-control" id="optId1" name="optA" placeholder="">
                                     <div id="err_optId1"></div>
                                 </div>
 
+                                <!-- Option A Image -->
+                                <div id="uploadArea1" style="display: none;">   
+                                    <div class="row">
+                                        <div class="form-group col-lg-5">
+                                            <label for="optImageId1">Image</label>
+                                            <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optAImage" id="optImageId1">
+                                        </div>
+                                <!-- Option A Audio -->
+                                        <div class="form-group col-lg-5">
+                                            <label for="optAudioId1">Audio</label>
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optAAudio" id="optAudioId1">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Option B Text -->
                                 <div class="form-group" id="optionArea2" style="display: none;">
-                                    <label for="">Option-B</label>
+                                    <label for=""><strong>Option-B</strong></label>
                                     <input type="text" class="form-control" id="optId2" name="optB" placeholder="">
                                     <div id="err_optId2"></div>
                                 </div>
 
+                                <!-- Option B Image -->
+                                <div id="uploadArea2" style="display: none;">
+                                    <div class="row">
+                                        <div class="form-group col-lg-5">
+                                            <label for="optImageId2">Image</label>
+                                            <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optBImage" id="optImageId2">
+                                        </div>
+                                    <!-- Option B Audio -->
+                                        <div class="form-group col-lg-5">
+                                            <label for="optAudioId2">Audio</label>
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optBAudio" id="optAudioId2">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Option C Text -->
                                 <div class="form-group" id="optionArea3" style="display: none;">
-                                    <label for="">Option-C</label>
+                                    <label for=""><strong>Option-C</strong></label>
                                     <input type="text" class="form-control" id="optId3" name="optC" placeholder="">
                                     <div id="err_optId3"></div>
                                 </div>
 
+                                <!-- Option C Image -->
+                                <div id="uploadArea3" style="display: none;">
+                                    <div class="row">
+                                        <div class="form-group col-lg-5">
+                                            <label for="optImageId3">Image</label>
+                                            <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optCImage" id="optImageId3">
+                                        </div>
+                                        <!-- Option C Audio -->
+                                        <div class="form-group col-lg-5">
+                                            <label for="optAudioId3">Audio</label>
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optCAudio" id="optAudioId3">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Option D Text -->
                                 <div class="form-group" id="optionArea4" style="display: none;">
-                                    <label for="">Option-D</label>
+                                    <label for=""><strong>Option-D</strong></label>
                                     <input type="text" class="form-control" id="optId4" name="optD" placeholder="">
                                     <div id="err_optId4"></div>
                                 </div>
 
+                                <!-- Option D Image -->
+                                <div id="uploadArea4" style="display: none;">
+                                    <div class="row">
+                                        <div class="form-group col-lg-5">
+                                            <label for="optImageId4">Image</label>
+                                            <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optDImage" id="optImageId4">
+                                        </div>
+                                        <!-- Option D Audio -->
+                                        <div class="form-group col-lg-5">
+                                            <label for="optAudioId4">Audio</label>
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optDAudio" id="optAudioId4">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Optio E Text -->
                                 <div class="form-group" id="optionArea5" style="display: none;">
-                                    <label for="">Option-E</label>
+                                    <label for=""><strong>Option-E</strong></label>
                                     <input type="text" class="form-control" id="optId5" name="optE" placeholder="">
                                     <div id="err_optId5"></div>
+                                </div>
+
+                                <!-- Option E Image -->
+                                <div id="uploadArea5" style="display: none;">
+                                    <div class="row">
+                                        <div class="form-group col-lg-5">
+                                            <label for="optImageId5">Image</label>
+                                            <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optEImage" id="optImageId5">
+                                        </div>
+                                        <!-- Option E Audio -->
+                                        <div class="form-group col-lg-5">
+                                            <label for="optAudioId5">Audio</label>
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optEAudio" id="optAudioId5">
+                                        </div>
+                                    </div>
                                 </div>
 
                                 <!-- Has score -->
@@ -127,7 +223,7 @@
 
                                 <!-- Queston Type -->
                                 <div class="form-group">
-                                    <label for="">Question Type</label>
+                                    <label for="">Answer Type</label>
                                     <select id="quesTypeId" name="quesType" class="form-control">
                                         <option value="">Please Select</option>
                                         <option value="0">Single Choice</option>
@@ -140,27 +236,27 @@
                                 <div class="form-group">
                                     <label for="" id="selectAnsRadioId">Choose your Answer :</label>
                                     <div class="form-check" id="ansRadioId1">
-                                        <input class="form-check-input" type="radio" id="ansRid1" name="selectAnsRadio">
+                                        <input class="form-check-input" type="radio" id="ansRid1" name="selectAnsRadio" value="1">
                                         <label class="form-check-label" id="optradioLabel1" for="ansRid1"></label>
                                     </div>
 
                                     <div class="form-check" id="ansRadioId2">
-                                        <input class="form-check-input" type="radio" id="ansRid2" name="selectAnsRadio">
+                                        <input class="form-check-input" type="radio" id="ansRid2" name="selectAnsRadio" value="2">
                                         <label class="form-check-label" id="optradioLabel2" for="ansRid2"></label>
                                     </div>
 
                                     <div class="form-check" id="ansRadioId3">
-                                        <input class="form-check-input" type="radio" id="ansRid3" name="selectAnsRadio">
+                                        <input class="form-check-input" type="radio" id="ansRid3" name="selectAnsRadio" value="3">
                                         <label class="form-check-label" id="optradioLabel3" for="ansRid3"></label>
                                     </div>
 
                                     <div class="form-check" id="ansRadioId4">
-                                        <input class="form-check-input" type="radio" id="ansRid4" name="selectAnsRadio">
+                                        <input class="form-check-input" type="radio" id="ansRid4" name="selectAnsRadio" value="4">
                                         <label class="form-check-label" id="optradioLabel4" for="ansRid4"></label>
                                     </div>
 
                                     <div class="form-check" id="ansRadioId5">
-                                        <input class="form-check-input" type="radio" id="ansRid5" name="selectAnsRadio">
+                                        <input class="form-check-input" type="radio" id="ansRid5" name="selectAnsRadio" value="5">
                                         <label class="form-check-label" id="optradioLabel5" for="ansRid5"></label>
                                     </div>
                                     <div id="err_selectAnsRadio"></div>
@@ -170,27 +266,27 @@
                                 <div class="form-group">
                                     <label for="" id="selectAnsCheckId">Select your Answer :</label>
                                     <div class="form-check" id="ansCheckId1">
-                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid1" name="ansCid1" value="">
+                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid1" name="ansCid1" value="1">
                                         <label class="form-check-label" id="optCheckLabel1" for="ansCid1">One</label>
                                     </div>
 
                                     <div class="form-check" id="ansCheckId2">
-                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid2" name="ansCid2" value="">
+                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid2" name="ansCid2" value="2">
                                         <label class="form-check-label" id="optCheckLabel2" for="ansCid2">Two</label>
                                     </div>
 
                                     <div class="form-check" id="ansCheckId3">
-                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid3" name="ansCid3" value="">
+                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid3" name="ansCid3" value="3">
                                         <label class="form-check-label" id="optCheckLabel3" for="ansCid3">Three</label>
                                     </div>
 
                                     <div class="form-check" id="ansCheckId4">
-                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid4" name="ansCid4" value="">
+                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid4" name="ansCid4" value="4">
                                         <label class="form-check-label" id="optCheckLabel4" for="ansCid4">Four</label>
                                     </div>
 
                                     <div class="form-check" id="ansCheckId5">
-                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid5" name="ansCid5" value="">
+                                        <input class="form-check-input checkAns" type="checkbox" id="ansCid5" name="ansCid5" value="5">
                                         <label class="form-check-label" id="optCheckLabel5" for="ansCid5">Five</label>
                                     </div>
                                     <div id="err_selectAnsCheck"></div>
@@ -227,6 +323,7 @@ var isMCQ;
 var hasScoreValue;
 
 // On page load
+
 document.getElementById('isPreValueId').style.display = 'none';
 document.getElementById('hideForm').style.display = 'none';
 document.getElementById('preBtn').style.display = 'none';
@@ -259,7 +356,6 @@ $('#storyId').on('change', function(){
                 document.getElementById('preBtn').style.display = 'block';
                 document.getElementById('postBtn').style.display = 'block';
             }
-
         }
     })
 
@@ -300,13 +396,16 @@ function loadForm(){
 // When select, How many options the question has
 
 function openOptionField(radioValue){
+    
     numOfOptions = radioValue;
-    // document.getElementById('radioBtn').style.display = 'none';
     var idStr = "optionArea";
+    var idFileStr = "uploadArea";
     for(let i = 1; i <= radioValue; i++){
         var idNumber = i.toString();
         var id = idStr.concat(idNumber);
+        var idFile = idFileStr.concat(idNumber);
         document.getElementById(id).style.display = 'block';
+        document.getElementById(idFile).style.display = 'inline';
     }
 }
 
@@ -326,6 +425,7 @@ $('#quesTypeId').on('change', function(){
     isMCQ = this.value;
     // Single Choice
     if(isMCQ == 0){
+
         document.getElementById('selectAnsCheckId').style.display = 'none';
         document.getElementById('ansCheckId1').style.display = 'none';
         document.getElementById('ansCheckId2').style.display = 'none';
@@ -335,6 +435,8 @@ $('#quesTypeId').on('change', function(){
         document.getElementById('selectAnsRadioId').style.display = 'block';
 
         var optionLabelStr = "optradioLabel";
+        var optImgStr = "optImageId";
+        var optAudioStr = "optAudioId";
         var idStr = "ansRadioId";
         var optionIdStr = "optId";
         var ansInputStr = "ansRid";
@@ -342,15 +444,30 @@ $('#quesTypeId').on('change', function(){
             var idNumber = i.toString();
             var id = idStr.concat(idNumber);
             document.getElementById(id).style.display = 'block';  //To display radio buttons
-            var optionId = optionIdStr.concat(idNumber);
+            
             var labelId = optionLabelStr.concat(idNumber);
-            var inputValue = document.getElementById(optionId).value; // Value of option
-            document.getElementById(labelId).innerHTML = inputValue; //Option input value, insert to label
+            var optionId = optionIdStr.concat(idNumber);
             var ansOptId = ansInputStr.concat(idNumber);
-            document.getElementById(ansOptId).value = inputValue; //Giving option value to radio button
+
+            // If text option value is not empty
+            if(document.getElementById(optionId).value != ""){
+
+                var inputValue = document.getElementById(optionId).value; // Value of option
+                document.getElementById(labelId).innerHTML = inputValue; //Option input value, insert to label
+            }
+            // If text in option is empty
+            else{
+                var imgId = optImgStr.concat(idNumber);
+                var imgPath = document.getElementById(imgId).value;
+                var imgPathLength = imgPath.length;
+                var imgName = imgPath.slice(12, imgPathLength);
+                document.getElementById(labelId).innerHTML = imgName;
+            }   
         }
     }
+    
     // Multiple Choice
+
     if(isMCQ == 1){
         document.getElementById('selectAnsRadioId').style.display = 'none';
         document.getElementById('ansRadioId1').style.display = 'none';
@@ -360,6 +477,7 @@ $('#quesTypeId').on('change', function(){
         document.getElementById('ansRadioId5').style.display = 'none';
         document.getElementById('selectAnsCheckId').style.display = 'block';
 
+        var optImgStr = "optImageId";
         var optionLabelStr = "optCheckLabel";
         var idStr = "ansCheckId";
         var optionIdStr = "optId";
@@ -370,17 +488,28 @@ $('#quesTypeId').on('change', function(){
             document.getElementById(id).style.display = 'block';
             var optionId = optionIdStr.concat(idNumber);
             var labelId = optionLabelStr.concat(idNumber);
-            var inputValue = document.getElementById(optionId).value;
-            document.getElementById(labelId).innerHTML = inputValue;
             var ansOptId = ansInputStr.concat(idNumber);
-            document.getElementById(ansOptId).value = inputValue;
+
+            if(document.getElementById(optionId).value != ""){
+                var inputValue = document.getElementById(optionId).value;
+                document.getElementById(labelId).innerHTML = inputValue;
+            }
+            else{
+                var imgId = optImgStr.concat(idNumber);
+                var imgPath = document.getElementById(imgId).value;
+                var imgPathLength = imgPath.length;
+                var imgName = imgPath.slice(12, imgPathLength);
+                document.getElementById(labelId).innerHTML = imgName;
+            }
         }
+        
     }
 });
 
 // ------------- The Form validation -----------
 
 function createQuesValidation(){
+
     // Question Text
     var question = document.getElementById("questionId").value;
     var err_question = document.getElementById("err_question");
@@ -406,31 +535,6 @@ function createQuesValidation(){
         err_optionCount.innerHTML = "Wrong";
         return false; 
     }
-
-    // Dynamic Options validation
-    // var optIdStr = "optId";
-    // var errStr = "err_optId";
-    // var patternOpt= /([a-zA-Z0-9_-]){1,45}$/g;
-    // var count = 0;
-    // for(var i = 1; i <= numOfOptions; i++){
-    //     var idNumber = i.toString();
-    //     var optId = optIdStr.concat(idNumber);
-    //     var errId = errStr.concat(idNumber);
-    //     var optionValue = document.getElementById(optId).value;
-    //     var errId = document.getElementById("errId");
-    //     // alert(optionValue);
-    //     if(optionValue.match(patternOpt))
-    //     {
-    //         document.getElementById(errId).innerHTML = "";    
-    //     }
-    //     else{
-    //         document.getElementById(optId).focus();
-    //         document.getElementById(errId).style.fontSize = "12px"; 
-    //         document.getElementById(errId).style.color = "red";
-    //         document.getElementById(errId).innerHTML = "Wrong"; 
-    //         return false; 
-    //     }
-    // }
 
     // Has Score ? validation
     var e = document.getElementById("hasScoreId");
@@ -503,6 +607,7 @@ function createQuesValidation(){
         return false; 
         }
     }
+
     // CkheckBox validation
     else{
         err_quesType.innerHTML = "";
@@ -532,8 +637,6 @@ function createQuesValidation(){
             return false; 
         }
     }
-
-// Dynamic option entry validation
 
 
 

@@ -7,10 +7,12 @@ class SuperAdminController extends CI_Controller {
         
         parent::__construct();
         $this->load->helper('url');
+        $this->load->helper('form');
         $this->load->model('LoginModel');
         $this->load->model('SuperAdminModel');
         $this->load->model('CompanyAdminModel');
         $this->load->library('session');
+        $this->load->library('upload');
     
     }
 
@@ -31,20 +33,6 @@ class SuperAdminController extends CI_Controller {
         }
 
     }
-
-    // public function createCompanyAdmin(){
-
-    //     $userData = $this->session->userdata('userData');
-
-    //     // Fetch company list where admin is not assigned
-    //     $noAdmin['companyList'] = $this->SuperAdminModel->companyWithNoAdmin();
-
-    //     $this->load->view('universal/uniHeader');
-    //     $this->load->view('universal/uniMainBody');
-    //     $this->load->view('superAdmin/createAdmin', $noAdmin);
-    //     $this->load->view('universal/uniFooter');
-
-    // }
 
     // Save company admin data
 
@@ -178,44 +166,91 @@ class SuperAdminController extends CI_Controller {
         $questionData['storyId'] = $this->input->post('storyId');
         $questionData['isPre'] = $this->input->post('isPreValue');
         $questionData['companyId'] = $userData['companyId'];            
-        $questionData['questionText'] = $this->input->post('question');
+        $questionData['qText'] = $this->input->post('question');
+        $questionData['qImage'] = $this->uploadImageFile('questionImage'); //Function call   
+        $questionData['qAudio'] = $this->uploadAudioFile('questionAudio');
         $questionData['hasScore'] = $this->input->post('hasScore');        
         $questionData['isMCQ'] = $this->input->post('quesType');
-        $questionData['optA'] = $this->input->post('optA');
-        $questionData['optB'] = $this->input->post('optB');
-        $questionData['optC'] = $this->input->post('optC');
-        $questionData['optD'] = $this->input->post('optD');   
-        $questionData['optE '] = $this->input->post('optE');
+        $questionData['opt1'] = $this->input->post('optA');
+        $questionData['optImage1'] = $this->uploadImageFile('optAImage');
+        $questionData['optAudio1'] = $this->uploadAudioFile('optAAudio');
+        $questionData['opt2'] = $this->input->post('optB');
+        $questionData['optImage2'] = $this->uploadImageFile('optBImage');
+        $questionData['optAudio2'] = $this->uploadAudioFile('optBAudio');
+        $questionData['opt3'] = $this->input->post('optC');
+        $questionData['optImage3'] = $this->uploadImageFile('optCImage');
+        $questionData['optAudio3'] = $this->uploadAudioFile('optCAudio');
+        $questionData['opt4'] = $this->input->post('optD');
+        $questionData['optImage4'] = $this->uploadImageFile('optDImage');
+        $questionData['optAudio4'] = $this->uploadAudioFile('optDAudio');
+        $questionData['opt5'] = $this->input->post('optE');
+        $questionData['optImage5'] = $this->uploadImageFile('optEImage');
+        $questionData['optAudio5'] = $this->uploadAudioFile('optEAudio');
         $questionData['weight'] = $this->input->post('weight');
         $questionData['isActive'] = '1';
         $questionData['createdBy'] = $userData['staffId'];
-        $singleAns= $this->input->post('selectAnsRadio');
+        $singleAns = $this->input->post('selectAnsRadio');
         $noOfOptions = $this->input->post('option');
         $quesType = $this->input->post('quesType');
-        $questionData['answer'] = "";
+        $questionData['optNmbrForAns'] = "";
+
         if($quesType == 0){
-            $questionData['answer'] = $singleAns;
+            $questionData['optNmbrForAns'] = $singleAns;
         }
-        // $tempArr = array();
         else{
             for($i = 0; $i < $noOfOptions; $i++){
                 $multyAns = $this->input->post('ansCid'.($i+1));
                 if($multyAns){
-                    $questionData['answer'] .= $multyAns;
-                    $questionData['answer'] .= ",";
+                    $questionData['optNmbrForAns'] .= $multyAns;
+                    $questionData['optNmbrForAns'] .= ",";
                 }
             }
         }
-        $questionData['answer'] = trim($questionData['answer'],",");
+        $questionData['optNmbrForAns'] = trim($questionData['optNmbrForAns'],",");
 
-        // var_dump($questionData);
-        // die();   
-        
         $this->SuperAdminModel->storeQuestionData($questionData);
 
         $this->session->set_flashdata('add_company_admin', 'Successfull!, Question has been added to Story');
 
         redirect(base_url('createQuestion'));
+    }
+
+    // Upload Image
+    private function uploadImageFile($name){
+
+        $config['upload_path'] = './assets/uploadedData/images/';
+        $config['allowed_types'] = 'gif|jpg|png|jpeg';
+        $config['max_size'] = 0;
+        $config['encrypt_name'] = true;
+        $this->upload->initialize($config);
+        if($this->upload->do_upload($name)){
+            $upload_data = $this->upload->data();
+            $randomName = $upload_data['file_name'];
+            $path = "assets/uploadedData/images/".$randomName;
+            return $path;
+        }
+        else{
+            return "";
+        }
+    }
+
+    // Upload Audio
+    private function uploadAudioFile($name){
+
+        $config['upload_path'] = './assets/uploadedData/Audio/';
+        $config['allowed_types'] = 'wav|mp3|m4a|wma|mp4';
+        $config['max_size'] = 0;
+        $config['encrypt_name'] = true;
+        $this->upload->initialize($config);
+        if($this->upload->do_upload($name)){
+            $upload_data = $this->upload->data();
+            $randomName = $upload_data['file_name'];
+            $path = "assets/uploadedData/Audio/".$randomName;
+            return $path;
+        } 
+        else{
+            return "";
+        }      
     }
 
     // To see company list for superAdmin
