@@ -298,11 +298,11 @@
 
                                 <div class='row'>
                                     <div class="col-auto float-right"> 
-                                        <input type="button" id="preBtn" class="btn btn-primary btn-user btn-block" value="Add Pre Question" onclick='loadForm()'>
+                                        <input type="button" id="preBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Pre Question" onclick='loadForm()'>
                                     </div>  
 
                                     <div class="col-auto float-right"> 
-                                        <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block" value="Add Post Question" onclick='loadForm()'>
+                                        <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Post Question" onclick='loadForm()'>
                                     </div>
                                 </div> 
 
