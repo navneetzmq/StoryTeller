@@ -205,7 +205,7 @@
 
                                 <!-- Has score -->
                                 <div class="form-group" id="hasScoreDiv">
-                                    <label for="">Has Score ?</label>
+                                    <label for=""><strong>Has Score ?</strong></label>
                                     <select id="hasScoreId" name="hasScore" class="form-control">
                                         <option value="">Please Select</option>
                                         <option value="1">Yes, has Score</option>
@@ -216,14 +216,14 @@
 
                                 <!-- Question weight -->
                                 <div class="form-group" id="weightId">
-                                    <label for="">Weight</label>
+                                    <label for=""><strong>Weight</strong></label>
                                     <input type="text" class="form-control" id="weight" name="weight" placeholder="">
                                     <div id="err_weight"></div>
                                 </div>
 
                                 <!-- Queston Type -->
                                 <div class="form-group">
-                                    <label for="">Answer Type</label>
+                                    <label for=""><strong>Answer Type</strong></label>
                                     <select id="quesTypeId" name="quesType" class="form-control">
                                         <option value="">Please Select</option>
                                         <option value="0">Single Choice</option>
@@ -234,7 +234,7 @@
 
                                 <!-- Radio buttons to select aswers-->
                                 <div class="form-group">
-                                    <label for="" id="selectAnsRadioId">Choose your Answer :</label>
+                                    <label for="" id="selectAnsRadioId"><strong>Choose your Answer :</strong></label>
                                     <div class="form-check" id="ansRadioId1">
                                         <input class="form-check-input" type="radio" id="ansRid1" name="selectAnsRadio" value="1">
                                         <label class="form-check-label" id="optradioLabel1" for="ansRid1"></label>
@@ -264,7 +264,7 @@
 
                                 <!-- Checkboxes to select aswers -->
                                 <div class="form-group">
-                                    <label for="" id="selectAnsCheckId">Select your Answer :</label>
+                                    <label for="" id="selectAnsCheckId"><strong>Select your Answer :</strong>`  </label>
                                     <div class="form-check" id="ansCheckId1">
                                         <input class="form-check-input checkAns" type="checkbox" id="ansCid1" name="ansCid1" value="1">
                                         <label class="form-check-label" id="optCheckLabel1" for="ansCid1">One</label>
@@ -343,7 +343,6 @@ $('#storyId').on('change', function(){
         success: function(response) {
             response = JSON.parse(response);
             let prePost = response["prePostQues"];
-            console.log(prePost);
             if(prePost == 1){
                 document.getElementById('preBtn').style.display = 'block';
                 document.getElementById('postBtn').style.display = 'none';
@@ -358,7 +357,6 @@ $('#storyId').on('change', function(){
             }
         }
     })
-
 });
 
 $("#preBtn").on('click', function(){
@@ -501,8 +499,7 @@ $('#quesTypeId').on('change', function(){
                 var imgName = imgPath.slice(12, imgPathLength);
                 document.getElementById(labelId).innerHTML = imgName;
             }
-        }
-        
+        }  
     }
 });
 
@@ -534,6 +531,45 @@ function createQuesValidation(){
         err_optionCount.style.fontSize = "12px"; 
         err_optionCount.innerHTML = "Wrong";
         return false; 
+    }
+
+    // Dynamic Option validation
+    for(var i = 1; i <= numOfOptions; i++){
+        // console.log(numOfOptions);
+        var optIdStr = "optId";
+        var optImgStr = "optImageId";
+        var errOptStr = "err_optId";
+        var idNumber = i.toString();
+        var optId = optIdStr.concat(idNumber);
+        var optImgId = optImgStr.concat(idNumber);
+        var optErrId = errOptStr.concat(idNumber);
+        var optValue = document.getElementById(optId).value;
+        var imgValue = document.getElementById(optImgId).value;
+        var err_opt = document.getElementById(optErrId);
+        
+        if(optValue != ""){
+            var patternOpt = /([a-zA-Z0-9?_-]){1,45}$/g;
+            if(optValue.match(patternOpt)){
+                err_opt.innerHTML = "";
+            }
+            else{
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Wrong"; 
+                return false;
+            }
+        }
+        else if(optValue == "" && imgValue != ""){
+            err_opt.innerHTML = "";
+        }
+        else{
+            document.getElementById(optId).focus();
+            err_opt.style.color = "red";
+            err_opt.style.fontSize = "12px"; 
+            err_opt.innerHTML = "Wrogn.! Either Text need to be filled or Image need to be uploaded!";
+            return false;
+        }
     }
 
     // Has Score ? validation
@@ -591,7 +627,6 @@ function createQuesValidation(){
         err_selectAnsCheck.innerHTML = "";
         var ansValid = false;
         var ansRadio = document.getElementsByName('selectAnsRadio');
-        // answer[0] = $("input[type='radio'][name='selectAnsRadio']:checked").val();
         for(let i = 0; i < ansRadio.length; i++){
             if(ansRadio[i].checked){
                 ansValid = true;
