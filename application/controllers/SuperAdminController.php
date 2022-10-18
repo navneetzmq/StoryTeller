@@ -207,9 +207,7 @@ class SuperAdminController extends CI_Controller {
             }
         }
         $questionData['optNmbrForAns'] = trim($questionData['optNmbrForAns'],",");
-        var_dump($questionData);
-        die();
-
+        
         $this->SuperAdminModel->storeQuestionData($questionData);
 
         $this->session->set_flashdata('add_company_admin', 'Successfull!, Question has been added to Story');

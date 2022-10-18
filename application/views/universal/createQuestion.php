@@ -358,9 +358,7 @@
                                         <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Post Question" onclick='loadForm()'>
                                     </div>
                                 </div> 
-                                <input type="button" class="btn btn-primary btn-user btn-block" value="Tst" onclick="createQuesValidation();">
-
-                                <!-- To hold the isPre value -->
+                                    <!-- To hold the isPre value -->
                                 <input type="text" name="isPreValue" id="isPreValueId">
                             </form>
                         </div>
