@@ -207,6 +207,8 @@ class SuperAdminController extends CI_Controller {
             }
         }
         $questionData['optNmbrForAns'] = trim($questionData['optNmbrForAns'],",");
+        var_dump($questionData);
+        die();
 
         $this->SuperAdminModel->storeQuestionData($questionData);
 

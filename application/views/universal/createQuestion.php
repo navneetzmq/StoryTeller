@@ -68,7 +68,7 @@
 
                                 <!-- How many Options the Question has ? -->
                                 <div class="form-group" id="radioBtn">
-                                    <label for="">How many options to answer?</label>
+                                    <label for=""><strong>Number of options to answer?</strong></label>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" value="2" name="option" id="id2" onchange="openOptionField(2);">
                                         <label class="form-check-label" for="id2">Two</label>
@@ -80,7 +80,7 @@
                                     </div>
 
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" value="4" name="option" id="id4" onchange="openOptionField(4);">
+                                        <input class="form-check-input" type="radio" value="4" name="option" id="id4" onchange="openOptionField(4) ;">
                                         <label class="form-check-label" for="id4">Four</label>
                                     </div>
 
@@ -91,117 +91,170 @@
                                     <div id="err_optionCount"></div>
                                 </div>
 
+                                <!-- Format for options -->
+                                <div class="form-group" id="optionFormatRadioBtn">
+                                    <label for=""><strong>Format for Options ?</strong></label>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="1" name="optionFormat" id="optionFormat1" onchange="openOptionFileUpload(1)">
+                                        <label class="form-check-label" for="optionFormat1">Text Only</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="2" name="optionFormat" id="optionFormat2" onchange="openOptionFileUpload(2)">
+                                        <label class="form-check-label" for="optionFormat2">Image Only</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="3" name="optionFormat" id="optionFormat3" onchange="openOptionFileUpload(3)">
+                                        <label class="form-check-label" for="optionFormat3">Text + Image</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="4" name="optionFormat" id="optionFormat4" onchange="openOptionFileUpload(4)">
+                                        <label class="form-check-label" for="optionFormat4">Text + Audio</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="5" name="optionFormat" id="optionFormat5" onchange="openOptionFileUpload(5)">
+                                        <label class="form-check-label" for="optionFormat5">Image + Audio</label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" value="6" name="optionFormat" id="optionFormat6" onchange="openOptionFileUpload(6)">
+                                        <label class="form-check-label" for="optionFormat6">Text + Image + Audio</label>
+                                    </div>
+                                    <div id="err_optionFormat"></div>
+                                </div>
+
+
                                 <!------------- options for question ------------->
 
                                 <!-- Option A Text-->
+                                <label for="" id="optLabelId1"><strong>Option-A</strong></label>
                                 <div class="form-group" id="optionArea1" style="display: none;">
-                                    <label for=""><strong>Option-A</strong></label>
                                     <input type="text" class="form-control" id="optId1" name="optA" placeholder="">
                                     <div id="err_optId1"></div>
                                 </div>
 
                                 <!-- Option A Image -->
-                                <div id="uploadArea1" style="display: none;">   
+                                
                                     <div class="row">
-                                        <div class="form-group col-lg-5">
+                                        <div id="optImgId1" class="form-group col-lg-5">
                                             <label for="optImageId1">Image</label>
                                             <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optAImage" id="optImageId1">
+                                            <div id="err_optImgId1"></div>
                                         </div>
                                 <!-- Option A Audio -->
-                                        <div class="form-group col-lg-5">
+                                        <div id="optAudioId1" class="form-group col-lg-5">
                                             <label for="optAudioId1">Audio</label>
-                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optAAudio" id="optAudioId1">
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optAAudio" id="optAudId1">
+                                            <div id="err_optAudioId1"></div>
                                         </div>
                                     </div>
-                                </div>
+                        
 
                                 <!-- Option B Text -->
+                                <label for="" id="optLabelId2"><strong>Option-B</strong></label>
                                 <div class="form-group" id="optionArea2" style="display: none;">
-                                    <label for=""><strong>Option-B</strong></label>
                                     <input type="text" class="form-control" id="optId2" name="optB" placeholder="">
                                     <div id="err_optId2"></div>
                                 </div>
 
                                 <!-- Option B Image -->
-                                <div id="uploadArea2" style="display: none;">
+    
                                     <div class="row">
-                                        <div class="form-group col-lg-5">
+                                        <div id="optImgId2" class="form-group col-lg-5">
                                             <label for="optImageId2">Image</label>
                                             <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optBImage" id="optImageId2">
+                                            <div id="err_optImgId2"></div>
                                         </div>
                                     <!-- Option B Audio -->
-                                        <div class="form-group col-lg-5">
+                                        <div id="optAudioId2" class="form-group col-lg-5">
                                             <label for="optAudioId2">Audio</label>
-                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optBAudio" id="optAudioId2">
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optBAudio" id="optAudId2">
+                                            <div id="err_optAudioId2"></div>
                                         </div>
                                     </div>
-                                </div>
+                            
 
                                 <!-- Option C Text -->
+                                <label for="" id="optLabelId3"><strong>Option-C</strong></label>
                                 <div class="form-group" id="optionArea3" style="display: none;">
-                                    <label for=""><strong>Option-C</strong></label>
                                     <input type="text" class="form-control" id="optId3" name="optC" placeholder="">
                                     <div id="err_optId3"></div>
                                 </div>
 
                                 <!-- Option C Image -->
-                                <div id="uploadArea3" style="display: none;">
+            
                                     <div class="row">
-                                        <div class="form-group col-lg-5">
+                                        <div id="optImgId3" class="form-group col-lg-5">
                                             <label for="optImageId3">Image</label>
                                             <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optCImage" id="optImageId3">
+                                            <div id="err_optImgId3"></div>
                                         </div>
                                         <!-- Option C Audio -->
-                                        <div class="form-group col-lg-5">
+                                        <div id="optAudioId3" class="form-group col-lg-5">
                                             <label for="optAudioId3">Audio</label>
-                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optCAudio" id="optAudioId3">
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optCAudio" id="optAudId3">
+                                            <div id="err_optAudioId3"></div>
                                         </div>
                                     </div>
-                                </div>
+            
 
                                 <!-- Option D Text -->
+                                <label for="" id="optLabelId4"><strong>Option-D</strong></label>
                                 <div class="form-group" id="optionArea4" style="display: none;">
-                                    <label for=""><strong>Option-D</strong></label>
                                     <input type="text" class="form-control" id="optId4" name="optD" placeholder="">
                                     <div id="err_optId4"></div>
                                 </div>
 
                                 <!-- Option D Image -->
-                                <div id="uploadArea4" style="display: none;">
+            
                                     <div class="row">
-                                        <div class="form-group col-lg-5">
+                                        <div id="optImgId4" class="form-group col-lg-5">
                                             <label for="optImageId4">Image</label>
                                             <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optDImage" id="optImageId4">
+                                            <div id="err_optImgId4"></div>
                                         </div>
                                         <!-- Option D Audio -->
-                                        <div class="form-group col-lg-5">
+                                        <div id="optAudioId4" class="form-group col-lg-5">
                                             <label for="optAudioId4">Audio</label>
-                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optDAudio" id="optAudioId4">
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optDAudio" id="optAudId4">
+                                            <div id="err_optAudioId4"></div>
                                         </div>
                                     </div>
-                                </div>
+            
 
                                 <!-- Optio E Text -->
+                                <label for="" id="optLabelId5"><strong>Option-E</strong></label>
                                 <div class="form-group" id="optionArea5" style="display: none;">
-                                    <label for=""><strong>Option-E</strong></label>
                                     <input type="text" class="form-control" id="optId5" name="optE" placeholder="">
                                     <div id="err_optId5"></div>
                                 </div>
 
                                 <!-- Option E Image -->
-                                <div id="uploadArea5" style="display: none;">
+        
                                     <div class="row">
-                                        <div class="form-group col-lg-5">
+                                        <div id="optImgId5" class="form-group col-lg-5">
                                             <label for="optImageId5">Image</label>
                                             <input type="file" accept="image/*" class="form-control-file form-control-sm" name="optEImage" id="optImageId5">
+                                            <div id="err_optImgId5"></div>
                                         </div>
                                         <!-- Option E Audio -->
-                                        <div class="form-group col-lg-5">
+                                        <div id="optAudioId5" class="form-group col-lg-5">
                                             <label for="optAudioId5">Audio</label>
-                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optEAudio" id="optAudioId5">
+                                            <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="optEAudio" id="optAudId5">
+                                            <div id="err_optAudioId5"></div>
                                         </div>
                                     </div>
-                                </div>
+        
+
+                                <!-- Option "None of Above" -->
+                                <!-- <div class="form-group" id="noneId" style="display: none;">
+                                    <label for=""><strong>None of above</strong></label>
+                                    <input type="text" class="form-control" id="none" name="none" placeholder="">
+                                    <div id="err_none"></div>
+                                </div> -->
 
                                 <!-- Has score -->
                                 <div class="form-group" id="hasScoreDiv">
@@ -305,6 +358,7 @@
                                         <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Post Question" onclick='loadForm()'>
                                     </div>
                                 </div> 
+                                <input type="button" class="btn btn-primary btn-user btn-block" value="Tst" onclick="createQuesValidation();">
 
                                 <!-- To hold the isPre value -->
                                 <input type="text" name="isPreValue" id="isPreValueId">
@@ -321,6 +375,7 @@ var option = ['A', 'B', 'C', 'D', 'E'];
 var isPre;
 var isMCQ;
 var hasScoreValue;
+var optFormat;
 
 // On page load
 
@@ -389,21 +444,82 @@ function loadForm(){
     document.getElementById('ansCheckId3').style.display = 'none';
     document.getElementById('ansCheckId4').style.display = 'none';
     document.getElementById('ansCheckId5').style.display = 'none';
+    document.getElementById('optImgId1').style.display = 'none';
+    document.getElementById('optImgId2').style.display = 'none';
+    document.getElementById('optImgId3').style.display = 'none';
+    document.getElementById('optImgId4').style.display = 'none';
+    document.getElementById('optImgId5').style.display = 'none';
+    document.getElementById('optAudioId1').style.display = 'none';
+    document.getElementById('optAudioId2').style.display = 'none';
+    document.getElementById('optAudioId3').style.display = 'none';
+    document.getElementById('optAudioId4').style.display = 'none';
+    document.getElementById('optAudioId5').style.display = 'none';
+    document.getElementById('optLabelId1').style.display = 'none';
+    document.getElementById('optLabelId2').style.display = 'none';
+    document.getElementById('optLabelId3').style.display = 'none';
+    document.getElementById('optLabelId4').style.display = 'none';
+    document.getElementById('optLabelId5').style.display = 'none';
+    document.getElementById('optionFormatRadioBtn').style.display = 'none';
 }
 
 // When select, How many options the question has
 
-function openOptionField(radioValue){
-    
+function openOptionField(radioValue){   
     numOfOptions = radioValue;
+    document.getElementById('radioBtn').style.display = 'none';
+    document.getElementById('optionFormatRadioBtn').style.display = 'block';
+}
+
+// Open Upload file options
+function openOptionFileUpload(format){
+    optFormat = format;
+    var optImgStr = 'optImgId';
+    var optAudioStr = 'optAudioId';
+    var optLabelStr = 'optLabelId';
     var idStr = "optionArea";
-    var idFileStr = "uploadArea";
-    for(let i = 1; i <= radioValue; i++){
+    for(let i = 1; i <= numOfOptions; i++){
         var idNumber = i.toString();
         var id = idStr.concat(idNumber);
-        var idFile = idFileStr.concat(idNumber);
-        document.getElementById(id).style.display = 'block';
-        document.getElementById(idFile).style.display = 'inline';
+        var idOptLebel = optLabelStr.concat(idNumber);
+        var idOptImg = optImgStr.concat(idNumber);
+        var idOptAudio = optAudioStr.concat(idNumber);
+        document.getElementById(idOptLebel).style.display = "block";
+        if(format == '1'){
+            document.getElementById(idOptImg).style.display = 'none';
+            document.getElementById(idOptAudio).style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+        }
+        else if(format == '2'){
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(idOptAudio).style.display = 'none';
+            document.getElementById(idOptImg).style.display = 'inline';
+        }
+        else if(format == '3'){
+            document.getElementById(idOptAudio).style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(idOptImg).style.display = 'inline';
+        }
+        else if(format == '4'){
+            document.getElementById(idOptImg).style.display = 'none';
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(idOptAudio).style.display = 'inline';
+        }
+        else if(format == '5'){
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(idOptImg).style.display = 'inline';
+            document.getElementById(idOptAudio).style.display = 'inline';
+
+        }
+        else if(format == '6'){
+            document.getElementById(id).style.display = 'block';
+            document.getElementById(idOptImg).style.display = 'inline';
+            document.getElementById(idOptAudio).style.display = 'inline';
+        }
+        else{
+            document.getElementById(id).style.display = 'none';
+            document.getElementById(idOptImg).style.display = 'none';
+            document.getElementById(idOptAudio).style.display = 'none';
+        }
     }
 }
 
@@ -506,7 +622,6 @@ $('#quesTypeId').on('change', function(){
 // ------------- The Form validation -----------
 
 function createQuesValidation(){
-
     // Question Text
     var question = document.getElementById("questionId").value;
     var err_question = document.getElementById("err_question");
@@ -533,21 +648,18 @@ function createQuesValidation(){
         return false; 
     }
 
-    // Dynamic Option validation
-    for(var i = 1; i <= numOfOptions; i++){
-        // console.log(numOfOptions);
+    // ----------------- Dynamic validation Option(Text, Image) ---------------- //
+
+    // Validate iff Option is Text Only
+    if(optFormat == 1){
         var optIdStr = "optId";
-        var optImgStr = "optImageId";
         var errOptStr = "err_optId";
-        var idNumber = i.toString();
-        var optId = optIdStr.concat(idNumber);
-        var optImgId = optImgStr.concat(idNumber);
-        var optErrId = errOptStr.concat(idNumber);
-        var optValue = document.getElementById(optId).value;
-        var imgValue = document.getElementById(optImgId).value;
-        var err_opt = document.getElementById(optErrId);
-        
-        if(optValue != ""){
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optId = optIdStr.concat(idNumber);
+            var optErrId = errOptStr.concat(idNumber);
+            var optValue = document.getElementById(optId).value;
+            var err_opt = document.getElementById(optErrId);
             var patternOpt = /([a-zA-Z0-9?_-]){1,45}$/g;
             if(optValue.match(patternOpt)){
                 err_opt.innerHTML = "";
@@ -556,20 +668,223 @@ function createQuesValidation(){
                 document.getElementById(optId).focus();
                 err_opt.style.color = "red";
                 err_opt.style.fontSize = "12px"; 
-                err_opt.innerHTML = "Wrong"; 
+                err_opt.innerHTML = "Text required!"; 
                 return false;
             }
         }
-        else if(optValue == "" && imgValue != ""){
-            err_opt.innerHTML = "";
+    }
+
+    // Validate iff Option has Image Only
+    else if(optFormat == 2){
+        var optImgStr = "optImageId";
+        var errImgStr = "err_optImgId";
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optImgId = optImgStr.concat(idNumber);
+            var errImgId = errImgStr.concat(idNumber);
+            var errImg = document.getElementById(errImgId);
+            var imgValue = document.getElementById(optImgId).value;
+            if(imgValue != ""){
+                errImg.innerHTML = "";
+            }
+            else{
+                document.getElementById(optImgId).focus();
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                return false;
+            }
         }
-        else{
-            document.getElementById(optId).focus();
-            err_opt.style.color = "red";
-            err_opt.style.fontSize = "12px"; 
-            err_opt.innerHTML = "Wrogn.! Either Text need to be filled or Image need to be uploaded!";
-            return false;
+    }
+
+    // Validate iff Option has Text + Image
+    else if(optFormat == 3){
+        var optIdStr = "optId";
+        var errOptStr = "err_optId";
+        var optImgStr = "optImageId";
+        var errImgStr = "err_optImgId";
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optId = optIdStr.concat(idNumber);
+            var optErrId = errOptStr.concat(idNumber);
+            var optImgId = optImgStr.concat(idNumber);
+            var errImgId = errImgStr.concat(idNumber);
+            var optValue = document.getElementById(optId).value;
+            var err_opt = document.getElementById(optErrId);
+            var errImg = document.getElementById(errImgId);
+            var imgValue = document.getElementById(optImgId).value;
+            var patternOpt = /([a-zA-Z0-9?_-]){1,45}$/g;
+            if(optValue.match(patternOpt) && imgValue != ""){
+                err_opt.innerHTML = "";
+                errImg.innerHTML = "";
+            }
+            else if(optValue.match(patternOpt) && imgValue == ""){
+                err_opt.innerHTML = "";
+                document.getElementById(optId).focus();
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                return false;
+            }
+            else if(!(optValue.match(patternOpt)) && imgValue != ""){
+                errImg.innerHTML = "";
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Text required!";
+                return false;
+            }
+            else{
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Text required!";
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                return false;
+            }
         }
+    }
+
+    // Validate iff option has Text + Audio
+    else if(optFormat == 4){
+        var optIdStr = "optId";
+        var errOptStr = "err_optId";
+        var optAudioStr = 'optAudId';
+        var errAudioStr = 'err_optAudioId';
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optId = optIdStr.concat(idNumber);
+            var optErrId = errOptStr.concat(idNumber);
+            var optAudioId = optAudioStr.concat(idNumber);
+            var errAudioId = errAudioStr.concat(idNumber);
+            var optValue = document.getElementById(optId).value;
+            var err_opt = document.getElementById(optErrId);
+            var errAudio = document.getElementById(errAudioId);
+            var audioValue = document.getElementById(optAudioId).value;
+            var patternOpt = /([a-zA-Z0-9?_-]){1,45}$/g;
+            if(optValue.match(patternOpt) && audioValue != ""){
+                err_opt.innerHTML = "";
+                errAudio.innerHTML = "";
+            }
+            else if(optValue.match(patternOpt) && audioValue == ""){
+                err_opt.innerHTML = "";
+                document.getElementById(optId).focus();
+                errAudio.style.color = "red";
+                errAudio.style.fontSize = "12px"; 
+                errAudio.innerHTML = "Audio required!";
+                return false;
+            }
+            else if(!(optValue.match(patternOpt)) && audioValue != ""){
+                errAudio.innerHTML = "";
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Text required!";
+                return false;
+            }
+            else{
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Text required!";
+                errAudio.style.color = "red";
+                errAudio.style.fontSize = "12px"; 
+                errAudio.innerHTML = "Audio required!";
+                return false;
+            }
+        }
+    }
+
+    // Validate if option has Image + Audio
+    else if(optFormat == 5){
+        var optImgStr = "optImageId";
+        var errImgStr = "err_optImgId";
+        var optAudioStr = 'optAudId';
+        var errAudioStr = 'err_optAudioId';
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optImgId = optImgStr.concat(idNumber);
+            var errImgId = errImgStr.concat(idNumber);
+            var optAudioId = optAudioStr.concat(idNumber);
+            var errAudioId = errAudioStr.concat(idNumber);
+            var errImg = document.getElementById(errImgId);
+            var imgValue = document.getElementById(optImgId).value;
+            var errAudio = document.getElementById(errAudioId);
+            var audioValue = document.getElementById(optAudioId).value;
+            if(imgValue != "" && audioValue != ""){
+                errImg.innerHTML = "";
+                errAudio.innerHTML = "";
+            }
+            else if(imgValue != "" && audioValue == ""){
+                errImg.innerHTML = "";
+                errAudio.style.color = "red";
+                errAudio.style.fontSize = "12px"; 
+                errAudio.innerHTML = "Audio required!";
+                return false;
+            }
+            else if(imgValue == "" && audioValue != ""){
+                errAudio.innerHTML = "";
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                return false;
+            }
+            else{
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                errAudio.style.color = "red";
+                errAudio.style.fontSize = "12px"; 
+                errAudio.innerHTML = "Audio required!";
+                return false;
+            }
+        }
+    }
+
+    // Validate iff option has Text + Image + Audio
+    else if(optFormat == 6){
+        var optIdStr = "optId";
+        var errOptStr = "err_optId";
+        var optImgStr = "optImageId";
+        var errImgStr = "err_optImgId";
+        var optAudioStr = 'optAudId';
+        var errAudioStr = 'err_optAudioId';
+        for(var i = 1; i <= numOfOptions; i++){
+            var idNumber = i.toString();
+            var optId = optIdStr.concat(idNumber);
+            var optErrId = errOptStr.concat(idNumber);
+            var optImgId = optImgStr.concat(idNumber);
+            var errImgId = errImgStr.concat(idNumber);
+            var optAudioId = optAudioStr.concat(idNumber);
+            var errAudioId = errAudioStr.concat(idNumber);
+            var optValue = document.getElementById(optId).value;
+            var err_opt = document.getElementById(optErrId);
+            var errImg = document.getElementById(errImgId);
+            var imgValue = document.getElementById(optImgId).value;
+            var errAudio = document.getElementById(errAudioId);
+            var audioValue = document.getElementById(optAudioId).value;
+            var patternOpt = /([a-zA-Z0-9?_-]){1,45}$/g;
+            if(optValue.match(patternOpt) && imgValue != "" && audioValue != ""){
+                err_opt.innerHTML = "";
+                errImg.innerHTML = "";
+                errAudio.innerHTML = "";
+            }
+            else{
+                document.getElementById(optId).focus();
+                err_opt.style.color = "red";
+                err_opt.style.fontSize = "12px"; 
+                err_opt.innerHTML = "Text required!"; 
+                errImg.style.color = "red";   
+                errImg.style.fontSize = "12px"; 
+                errImg.innerHTML = "Image required!";
+                errAudio.style.color = "red";
+                errAudio.style.fontSize = "12px"; 
+                errAudio.innerHTML = "Audio required!";
+                return false;
+            }
+        }   
     }
 
     // Has Score ? validation
@@ -672,11 +987,6 @@ function createQuesValidation(){
             return false; 
         }
     }
-
-
-
 }
-
-
 </script>
 </html>
