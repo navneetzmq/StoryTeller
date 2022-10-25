@@ -22,7 +22,7 @@
                     
                     <!-- form -->
 
-                    <!-- <//?php var_dump($storyData); die();?> -->
+                    <!-- <//?php var_dump(count($storyData));?> -->
 
                     <form method="POST" action="<?= base_url('CompanyAdminController/saveAssignedStory');?>">
 
@@ -31,7 +31,7 @@
                     <div class="form-group">
                         <label for="">Select Trainer to assign Story</label>
                         <select id="staffId" name="staff" class="form-control">
-                            <option selected>Select Employee</option>
+                            <option selected disabled>Select Trainer</option>
 
                             <?php
                                 if(isset($staffData) && !empty($staffData)){
@@ -47,7 +47,7 @@
 
                     <!-- Table with ckeckboxes to select Multiple Stories to assign Trainer -->
 
-                    <h4>Select One or Multiple Stories</h4>
+                    <h4 id="tableTitle">Company Stories</h4>
                     <hr>
                     <div class="container">
                     <table id="example" class="table table-sm table-responsive table-striped table-bordered" style="width:100%">
@@ -64,31 +64,41 @@
                 <!-- Getting Story data into the table -->
 
                 <?php
-                $count = 1;
+                $count = 0;
                 foreach($storyData as $row){
-                //   for(var $i=0; $i < count($staff); $i++ ) {  
-
+                    $checkIdStr = "cId";
+                    $temp = (string)$count;
+                    $checkId = $checkIdStr.$temp;
                     echo "<tr>";
                     echo "<td>".$count."</td>";
                     echo "<td>".$row->storyTitle."</td>";
 
                     if(($row->isPublic) == '1'){
-                        echo "<td>"."Public"."</td>";
+                    ?>
+                        <td>Public</td>
+                        <td>
+                            <div class="form-check">
+                                <input type="checkbox" id="<?=$checkId?>" name="story" value="<?=$row->storyId;?>">
+                            </div>
+                        </td>
+                    <?php
                     }
                     else{
-                        echo "<td>"."Private"."</td>";
+                    ?>
+                        <td>Private</td>
+                        <td>
+                            <div class="form-check">
+                                <input type="checkbox" id="<?=$checkId?>" name="story" value="<?=$row->storyId;?>">
+                            </div>
+                        </td>
+                    <?php
                     }
                 ?>
-                    <td>
-                        <div class="form-check">
-                            <input type="checkbox" id="storyId" name="story" value="<?=$row->storyId;?>">
-                        </div>
-                    </td>
                 </tr>
                 <?php
                     $count++;
                 }
-      
+
                 ?>
                 </tbody>
             </table>
@@ -103,14 +113,58 @@
 
 <script>
 
-// To get story Id in an array
+// To enable stories which are not public as well as not assigned
+
+var storyCount = '<?php echo(count($storyData))?>';
+// alert(storyCount);
+$('#staffId').on('change', function(){
+    var trainerId = this.value;
+    var checkIdStr = "cId";
+    for(let i = 0; i < storyCount; i++){
+        var idNumber = i.toString();
+        var checkId = checkIdStr.concat(idNumber);
+        document.getElementById(checkId).checked = false;
+    }
+    $.ajax({
+        url: "<?= base_url('CompanyAdminController/getAssignedStories')?>",
+        type: 'POST',
+        data: {
+            trainerId : trainerId,
+        },
+        success: function(response) {
+            response = JSON.parse(response);
+            var objLength = response.length;
+            // console.log(response);
+            var checkIdStr = "cId";
+            document.getElementById('tableTitle').innerHTML = "Select Story(s)";
+            for(let j = 0; j < storyCount; j++){
+                var idNumber = j.toString();
+                var checkId = checkIdStr.concat(idNumber);
+                var idValue = document.getElementById(checkId).value;
+                for(let k = 0; k < objLength; k++){
+                    console.log(idValue);
+                    console.log(response[k].storyId);
+                    console.log('*');
+                    if(idValue == response[k].storyId){
+                        document.getElementById(checkId).checked = true;
+                    }
+                    else{
+                        document.getElementById(checkId).checked = false;                    
+                    }
+                }
+            }
+        }
+    });
+});
+
+// Stories are assigning to tariner using This ajax
 var all=[];
 
 $("#submitBtn").on('click',function(){
 
     staffId = $('#staffId :selected').val();  //Gettng Select trainer Id
-    
-    console.log(staffId,all);
+
+    // console.log(staffId,all);
 
     $.ajax({
         url: "<?= base_url('CompanyAdminController/saveAssignedStory') ?>",
@@ -120,7 +174,8 @@ $("#submitBtn").on('click',function(){
             storyId : JSON.stringify(all),
         },
         success: function(data, textStatus, jqXHR) {
-            window.location = "<?= base_url("assignStory"); ?>";
+            console.log(data);
+            window.location = "<?= base_url('assignStory'); ?>";
         }
     })
 });
@@ -128,7 +183,7 @@ $("#submitBtn").on('click',function(){
     // ---------- Pushing ckeckbox values in an array --------
 
 $(document).on('change','input[type=checkbox]' ,function(){
-    
+
     all=[];
 
     $('input[type=checkbox]:checked').each(function(){          
@@ -138,6 +193,22 @@ $(document).on('change','input[type=checkbox]' ,function(){
     })
     
 });
+
+
+    // // Validating
+    // var e = document.getElementById("hasScoreId");
+    // var err_hasScore = document.getElementById('err_hasScore');
+    // var optionSelIndex = e.options[e.selectedIndex].value;
+    // var optionSelectedText = e.options[e.selectedIndex].text;
+    // if (optionSelIndex == '') {
+    //     document.getElementById("hasScoreId").focus();
+    //     err_hasScore.style.color = "red";
+    //     err_hasScore.style.fontSize = "12px";
+    //     err_hasScore.innerHTML = "Wrong";
+    //     return false;
+    // } else {
+    //     err_hasScore.innerHTML = "";
+    // }
 
 </script>
 </html>

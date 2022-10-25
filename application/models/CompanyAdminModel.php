@@ -75,18 +75,43 @@ class CompanyAdminModel extends CI_Model {
         $query = $this->db->query("SELECT staffId, name FROM masterStaff where companyId = '{$userCompany}' AND level = '3'");
 
         return $query->result();
-    
+
     }
 
     // To save assign stories to trainer
 
     public function saveAssignedStories($dataToinsert){
 
-        for($i=0; $i<count($dataToinsert); $i++){
+        $trainerId = $dataToinsert[0]['staffId'];
+        $arrCount = count($dataToinsert);
 
-            $this->db->insert('mapStaffStory', $dataToinsert[$i]);
+        for($i=0; $i < $arrCount; $i++){
+            $storyId = $dataToinsert[$i]['storyId'];
+            $rows = $this->checkIfStoryAssigned($trainerId, $storyId);
 
+            if($rows == 0){
+                $this->db->insert('mapStaffStory', $dataToinsert[$i]);
+            }
         }
+    }
+
+    private function checkIfStoryAssigned($trainerId, $storyId){
+        $this->db->select('*')
+            ->from('mapStaffStory')
+            ->where('staffId',  $trainerId)
+            ->where('storyId', $storyId);
+        $query = $this->db->get();
+        return $query->num_rows();
+    }
+
+    // get assigned stories
+    public function assignedStories($trainerId){
+
+        $this->db->select('storyId')
+            ->from('mapStaffStory')
+            ->where('staffId', $trainerId);
+        $query = $this->db->get();
+        return $query->result_array();
 
     }
 

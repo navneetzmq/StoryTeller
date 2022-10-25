@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="card-body">
                     <!-- form -->
-                        <form method="POST" action="<?= base_url('SuperAdminController/saveQuestionData');?>" enctype="multipart/form-data">
+                        <form method="POST" name="questionForm" action="<?= base_url('SuperAdminController/saveQuestionData');?>" enctype="multipart/form-data">
 
                             <!-- Dropdown to select Story -->
                             
@@ -620,6 +620,7 @@ $('#quesTypeId').on('change', function(){
 // ------------- The Form validation -----------
 
 function createQuesValidation(){
+
     // Question Text
     var question = document.getElementById("questionId").value;
     var err_question = document.getElementById("err_question");
@@ -643,6 +644,18 @@ function createQuesValidation(){
         err_optionCount.style.color = "red";
         err_optionCount.style.fontSize = "12px"; 
         err_optionCount.innerHTML = "Wrong";
+        return false; 
+    }
+
+    // Radio button validation (Format for Options)
+    var formatArr = document.getElementsByName('optionFormat');
+    if(formatArr[0].checked || formatArr[1].checked || formatArr[2].checked || formatArr[3].checked || formatArr[4].checked || formatArr[5].checked){
+        err_optionFormat.innerHTML = "";
+    }
+    else{
+        err_optionFormat.style.color = "red";
+        err_optionFormat.style.fontSize = "12px"; 
+        err_optionFormat.innerHTML = "Wrong";
         return false; 
     }
 
@@ -898,7 +911,7 @@ function createQuesValidation(){
         return false;
     } else {
         err_hasScore.innerHTML = "";
-    }
+    }   
 
     // Answer Weight
     if(hasScoreValue == 1){
@@ -931,8 +944,6 @@ function createQuesValidation(){
     } else {
         err_quesType.innerHTML = "";
     }
-
-
 
     //Radio button for Answer 
     if(isMCQ == 0){

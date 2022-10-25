@@ -243,6 +243,7 @@ class SuperAdminController extends CI_Controller {
         $config['encrypt_name'] = true;
         $this->upload->initialize($config);
         if($this->upload->do_upload($name)){
+
             $upload_data = $this->upload->data();
             $randomName = $upload_data['file_name'];
             $path = "assets/uploadedData/Audio/".$randomName;
@@ -250,7 +251,7 @@ class SuperAdminController extends CI_Controller {
         } 
         else{
             return "";
-        }      
+        }  
     }
 
     // To see company list for superAdmin
@@ -270,7 +271,6 @@ class SuperAdminController extends CI_Controller {
         else{
             echo("Error in Story creation");
         }
-
     }
 
     public function checkStoryHasPreQues(){

@@ -157,26 +157,50 @@ class CompanyAdminController extends CI_Controller {
         }
     }
 
+    // Get stories
+    public function getStories(){
+        $userData = $this->session->userdata('userData');
+        $userCompany = $userData['companyId'];
+        $storyData = $this->CompanyAdminModel->getStoryByCompany($userCompany);
+        echo(json_encode($storyData));
+    } 
+
+    // Get assignable 
+    public function getAssignedStories(){
+        $trainerId = $this->input->post("trainerId");
+        $assignedStories = $this->CompanyAdminModel->assignedStories($trainerId);
+        echo(json_encode($assignedStories));
+    }
+
     // Save assigned stories data
- 
+
     public function saveAssignedStory(){
 
-        $userData = $this->session->userdata('userData');  
+        $userData = $this->session->userdata('userData');
 
         $stfId = $this->input->post('trainerId');
 
         $storyId = $this->input->post('storyId');
 
-        $storyId = json_decode($storyId,true);
+        $storyIds = json_decode($storyId,true); // Array of storyId (selected checkboxes)
+
+        // Get already assigned stories for corresponding TrainerId
+        // $assignedStories = $this->CompanyAdminModel->assignedStories($stfId);
+
+        // var_dump($assignedStories);
+        // die();
 
         $dataToinsert=array();
 
-        for($i = 0; $i < count($storyId); $i++){
+        for($i = 0; $i < count($storyIds); $i++){
 
-            $tempArr=['staffId'=>$stfId,'storyId'=>$storyId[$i], 'isActive'=>'1'];
+            $tempArr=['staffId'=>$stfId,'storyId'=>$storyIds[$i], 'isActive'=>'1'];
 
             $dataToinsert[$i]=$tempArr;
         }
+
+        // var_dump($dataToinsert);
+        // die();
 
         $this->CompanyAdminModel->saveAssignedStories($dataToinsert);
 
