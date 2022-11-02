@@ -83,6 +83,12 @@ $route['staff'] = 'CompanyAdminController/staffDetails';
 
 $route['addCompanyAdmin'] = 'SuperAdminController/createCompanyAdmin';
 
+$route['test'] = 'CompanyAdminController/startTest';
+
+$route['result'] = 'OpenPlayerController/showResult';
+
+$route['generic'] = 'CompanyAdminController/loadGeneric';
+
 
 // ************** API ************* //
 

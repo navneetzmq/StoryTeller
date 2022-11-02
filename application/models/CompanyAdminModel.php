@@ -263,6 +263,11 @@ class CompanyAdminModel extends CI_Model {
         }
 
     }
+
+    // Submit generic Data
+    public function submitGenericData($genericData){
+        $this->db->insert('masterGeneric', $genericData);
+    }
     
 }
 

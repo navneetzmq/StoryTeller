@@ -357,7 +357,7 @@
                                     <div class="col-auto float-right"> 
                                         <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Post Question" onclick='loadForm()'>
                                     </div>
-                                </div> 
+                                </div>
                                     <!-- To hold the isPre value -->
                                 <input type="text" name="isPreValue" id="isPreValueId">
                             </form>
@@ -996,6 +996,6 @@ function createQuesValidation(){
             return false; 
         }
     }
-}
+}    
 </script>
 </html>

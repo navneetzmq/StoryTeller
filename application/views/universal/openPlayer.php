@@ -22,7 +22,6 @@
 
                     <!-- <//?php var_dump($story)?> -->
 
-                    
                     <!-- form -->
                     <form method="POST" action="<?= base_url('OpenPlayerController/saveOpenPlayerData');?>">
                         <div class="form-group">
@@ -72,10 +71,8 @@
                             <textarea class="form-control" id="openAddId" name="openAdd"></textarea>
                             <div id="err_openAdd"></div>
                         </div>
-                        
                         <hr>
-
-                        <div class="col-auto float-right">  
+                        <div class="col-auto float-right">
                             <button type="submit" class="btn btn-primary mb-2" name="submit" onclick="return validateOpenPlayer();">Submit</button>
                         </div>
                     </form>
@@ -193,9 +190,6 @@
 
             if(openAdd.match(patternOpenAdd))
             {
-                 
-                // err_openAdd.style.fontSize = "12px";
-                // err_openAdd.style.color = "green"; 
                 err_openAdd.innerHTML = "";    
  
             }else{
@@ -205,6 +199,7 @@
                 err_openAdd.innerHTML = "Wrong";  
                 return false;                
             }
+            return true;
         }
     </script>
     </script>

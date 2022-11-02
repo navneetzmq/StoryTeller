@@ -149,7 +149,7 @@ class SuperAdminController extends CI_Controller {
         if(isset($userData)){
             $this->load->view('universal/uniHeader');
             $this->load->view('universal/uniMainBody');
-            $this->load->view('universal/createQuestion', $storyData);  
+            $this->load->view('universal/createQuestion', $storyData);
             $this->load->view('universal/uniFooter');
         }
         else{

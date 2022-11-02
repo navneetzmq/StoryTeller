@@ -121,6 +121,11 @@
                         </div>
                         <div id="collapse_company" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="<?= base_url('generic');?>">Create Generic</a>
+                            </div>
+                        </div>
+                        <div id="collapse_company" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
                                 <a class="collapse-item" href="<?= base_url('createQuestion');?>">Create Question</a>
                             </div>
                         </div>
@@ -304,7 +309,6 @@
                                 | <?php print_r($userData['loginId']); ?> </span>
                             </a>
                             <?php }} ?>
-
 
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

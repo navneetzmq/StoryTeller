@@ -304,6 +304,34 @@ class CompanyAdminController extends CI_Controller {
 
     }
 
+    // Start test
+    public function startTest(){
+        $this->load->view('universal/startTest');
+    }
+
+    // Load createGeneric
+    public function loadGeneric(){
+        $this->load->view('universal/uniHeader');
+        $this->load->view('universal/uniMainBody');
+        $this->load->view('companyAdmin/createGeneric');
+        $this->load->view('universal/uniFooter');
+    }
+
+    // Save Generic Data
+    public function saveGenericData(){
+        $userData = $this->session->userdata('userData');
+        $genericData['companyId'] = $userData['companyId'];
+        $genericData['genericTitle'] = $this->input->post('genericTitle');
+        $genericData['isActive'] = 1;
+        $genericData['createdBy'] = $userData['staffId'];
+
+        $this->CompanyAdminModel->submitGenericData($genericData);
+
+        $this->session->set_flashdata('add_company_admin', 'Successfull!, Generic has been Created');
+
+        redirect(base_url('generic'));
+    }
+
 }
 
 ?>
