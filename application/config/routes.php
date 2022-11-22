@@ -89,6 +89,10 @@ $route['result'] = 'OpenPlayerController/showResult';
 
 $route['generic'] = 'CompanyAdminController/loadGeneric';
 
+$route['editQues'] = 'SuperAdminController/editQuestion';
+
+$route['rules'] = 'CompanyAdminController/loadRuleBook';
+
 
 // ************** API ************* //
 

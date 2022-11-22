@@ -126,7 +126,17 @@
                         </div>
                         <div id="collapse_company" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="<?= base_url('rules');?>">Add Rule-Book</a>
+                            </div>
+                        </div>
+                        <div id="collapse_company" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
                                 <a class="collapse-item" href="<?= base_url('createQuestion');?>">Create Question</a>
+                            </div>
+                        </div>
+                        <div id="collapse_company" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                            <div class="bg-white py-2 collapse-inner rounded">
+                                <a class="collapse-item" href="<?= base_url('editQues');?>">Update Question</a>
                             </div>
                         </div>
                     </li>

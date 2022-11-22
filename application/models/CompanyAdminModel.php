@@ -112,7 +112,6 @@ class CompanyAdminModel extends CI_Model {
             ->where('staffId', $trainerId);
         $query = $this->db->get();
         return $query->result_array();
-
     }
 
     // To get Story information using Comapny Id
@@ -268,7 +267,79 @@ class CompanyAdminModel extends CI_Model {
     public function submitGenericData($genericData){
         $this->db->insert('masterGeneric', $genericData);
     }
-    
-}
 
+    // To fetch list of stories from masterStory Table
+    public function getStoryList(){
+        $this->db->select('*')    
+            ->from('masterStory');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // To fetch list of Generics from masterGeneric Table
+    public function getGenericList(){
+        $this->db->select('*')    
+            ->from('masterGeneric');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    // Fetch data from testLayout table using storyId
+    public function storyTestLayout($storyId){
+        $this->db->select('*')    
+            ->from('testLayout')
+            ->where('storyId', $storyId);
+        $query = $this->db->get();
+        return $query->result()[0];
+    }
+    // Fetch data from testLayout table using genericId
+    public function genericTestLayout($genericId){
+        $this->db->select('*')
+            ->from('testLayout')
+            ->where('genericId', $genericId);
+        $query = $this->db->get();
+        return $query->result()[0];
+    }
+
+    // Submit RuleBook datda in testLayout table
+    public function submitRuleBookData($ruleData){
+        $this->db->select('storyId, genericId')    
+            ->from('testLayout');
+        $query = $this->db->get();
+        $storyGenericId = $query->result_array();
+        $arrLength = count($storyGenericId);
+        $storyExists = 0;
+        $genericExists = 0;
+        for($i = 0; $i < $arrLength; $i++){
+            if($storyGenericId[$i]['storyId'] == $ruleData['storyId']){
+                $storyExists++;
+            }
+            if($storyGenericId[$i]['genericId'] == $ruleData['genericId']){
+                $genericExists++;
+            }
+        }
+
+        // insert or Update story rule
+        if(($storyExists != 0) && ($ruleData['storyId']) != "0"){
+            // update row story rule
+            $this->db->where('storyId', $ruleData['storyId']);
+            $this->db->update('testLayout', $ruleData);
+        }
+        else if(($storyExists == 0) && ($ruleData['storyId']) != "0"){
+            // insert row story rule
+            $this->db->insert('testLayout', $ruleData);
+        }
+
+        // insert or Update story rule
+        else if(($genericExists != 0) && ($ruleData['genericId']) != "0"){
+            // update row generic rule
+            $this->db->where('genericId', $ruleData['genericId']);
+            $this->db->update('testLayout', $ruleData);
+        }
+        else if(($genericExists == 0) && ($ruleData['genericId']) != "0"){
+            // insert row generic rule
+            $this->db->insert('testLayout', $ruleData);
+        }
+    }
+}
 ?>

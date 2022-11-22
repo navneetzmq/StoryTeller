@@ -1,6 +1,6 @@
 <html>
     <head>
-    <?php 
+    <?php
       $userData = $this->session->userdata('userData');
     ?>
     </head>
@@ -79,7 +79,7 @@
                 ?>
                 </tr>
                 <?php
-                }      
+                }
                 ?>
                 </tbody>
             </table>
@@ -186,9 +186,7 @@ function updateStaffData(staffId){
     },
     success: function(response) {
       response = JSON.parse(response);
-
-      console.log(response);
-
+      // console.log(response);
       document.getElementById('empIdInput').value = response['staffId'];
       document.getElementById('empNameInput').value = response['name'];
       document.getElementById('empPhoneInput').value = response['phone'];

@@ -33,7 +33,7 @@ class SuperAdminModel extends CI_Model {
         $query = $this->db->query("SELECT storyId, storyTitle, isPublic FROM masterStory where createdBy = {$staffId}");
 
         $stories = $query->result();
-        
+
         for($i = 0; $i < count($stories); $i++){
 
             $storyId = $stories[$i]->storyId;
@@ -51,6 +51,15 @@ class SuperAdminModel extends CI_Model {
         return $stories;
     }
 
+    // to get generic data
+    public function getGenericData($staffId){
+        $this->db->select('genericId, genericTitle, isActive')
+            ->from('masterGeneric')
+            ->where('createdBy', $staffId);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     // To store question data
 
     public function storeQuestionData($questionData){
@@ -59,8 +68,22 @@ class SuperAdminModel extends CI_Model {
 
     }
 
-    // To get company list for SuperAdmin
+    // To get question data by id
+    public function getQuestionData($quesId){
+        $this->db->select('*')
+            ->from('questionBank')
+            ->where('questionId', $quesId);
+        $query = $this->db->get();
+        return $query->result_array()[0];
+    }
 
+    // To store Editted question data
+    public function editQuesData($updatedQuesData, $quesId){
+        $this->db->where('questionId', $quesId);
+        $this->db->update('questionBank', $updatedQuesData);
+    } 
+
+    // To get company list for SuperAdmin
     public function getCompanyList(){
         $adminId = array('5');
         $this->db->select('companyId, adminId, companyName, location, email, isActive, createdDateTime')
@@ -68,11 +91,9 @@ class SuperAdminModel extends CI_Model {
             ->where_not_in('adminId', $adminId);
         $query = $this->db->get();
         return $query->result();
-
     }
 
     // Company list without admin
-    
     public function companyWithNoAdmin(){
 
         $this->db->select('companyId, companyName')
@@ -115,6 +136,16 @@ class SuperAdminModel extends CI_Model {
 
             return true;
         }
+    }
+
+    // Get Company Admin details
+    public function getCompanyAdmin($companyId){
+        $this->db->select('name, phone, email, address')
+            ->from('masterStaff')
+            ->where('companyId', $companyId)
+            ->where('level', 1);
+        $query = $this->db->get();
+        return $query->result_array()[0];
     }
 }
 

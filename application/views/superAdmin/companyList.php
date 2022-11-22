@@ -8,28 +8,27 @@
                     <li class="breadcrumb-item active" aria-current="page">List of Companies</li>
                 </ol>
             </nav>
-            <div class="col-md-9 mx-auto">
+            <div class="col-md-9 col-lg-12 mx-auto">
                 <?php if($this->session->flashdata('add_company_admin')) { ?>
     	        <?php echo '<p class="alert alert-success mt-3 text-center" id="add">
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
-                </button>' 
+                </button>'
                 .$this->session->flashdata('add_company_admin') . '</p>'; ?>
 	  	        <?php } $this->session->unset_userdata('add_company_admin');  //unset session ?>
 
                 <div id="hideTableId" class="card">
                     <div class="card-body">
 
-                    <!-- form -->                    
+                    <!-- form -->
                     <form method="POST" action="<?= base_url('SuperAdminController/saveCompanyAdminData');?>">
-
                         <h4>Companies</h4>
                         <hr>
                         <div class="container">
                             <table class="table table-sm table-responsive table-striped table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th>Name</th>
+                                        <th>Company Name</th>
                                         <th>Location</th>
                                         <th>Email</th>
                                         <th>Creation Time</th>
@@ -54,7 +53,7 @@
                                         echo "<td>"."<input type='button' class='btn btn-primary btn-sm assignAdmin' data-target='#exampleModal' data-toggle='modal' onclick='assignAdmin(".'"'.$row->companyId.'"'.");' value='Assign Admin'>"."</td>";
                                     }
                                     else{
-                                        echo "<td>"."<input type='button' class='btn btn-primary btn-sm assignAdmin' data-target='#exampleModal' data-toggle='modal' onclick='assignAdmin(".'"'.$row->companyId.'"'.");' value='Assigned' disabled>"."</td>";
+                                        echo "<td>"."<input type='button' class='btn btn-info btn-sm assignAdmin' onclick='adminDetails(".'"'.$row->companyId.'"'.");' value='Admin Details'>"."</td>";
                                     }
                                     if($row->isActive == 1){
                                         echo "<td>"."<input type='button' id='activeBtn' class='btn btn-outline-success btn-sm' data-toggle='modal' onclick='activeInActiveCompany(".'"'.$row->companyId.'",'.'1'.");' value='Active'>"."</td>";
@@ -77,8 +76,8 @@
 
         <!------------------ Modal -------------->
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
+        <div class="modal fade bd-example-modal-lg" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalLabel">Create new Admin</h5>
@@ -93,8 +92,6 @@
                                 <input type="text" class="form-control" id="companyId" name="companyId" placeholder="" >
                                 <div id="err_companyId"></div>
                             </div>
-        
-                            
                             <div class="form-group">
                                 <label for="">Admin Name</label>
                                 <input type="text" class="form-control" id="empNameId" name="empName" placeholder="">
@@ -130,7 +127,7 @@
                                     <label for="">Password</label>
                                     <input type="text" class="form-control" id="empPswdId" name="empPswd" placeholder="">
                                 <div id="err_empPswd"></div>
-                                </div>
+                            </div>
 
                                 <div class="col-auto float-right">  
                                     <button type="submit" class="btn btn-primary mb-2" name="submit" onclick="return formValidation();">Submit</button>
@@ -141,10 +138,36 @@
                 </div>
             </div>
         </div>
-    </body>
 
+        <!-- Modal to show result -->
+        <div class="modal fade" id="adminInfoModal" tabindex="-1" aria-labelledby="adminInfoModalLabel" aria-hidden="true" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: skyblue; color: black;">
+                <div class="modal-header" style="text-align: center;">
+                    <h4 class="modal-title" id="adminInfoModalLabel">Admin : </h4>
+                    <button type="button" id="dismissId" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin-left: 40px">
+                    <!-- Emp Name -->
+                    <div class="row">
+                        <h5>Name : <strong><span id="adminNameId"></span></strong></h5>
+                    </div>
+                    <div class="row">
+                        <h5>Phone : <span id="adminPhoneId"></span></h5>
+                    </div>
+                    <div class="row">
+                        <h5>Email : <span id="adminEmailId"></span></h5>
+                    </div>
+                    <div class="row">
+                        <h5>Address : <span id="adminAddressId"></span></h5>
+                    </div>
+            </div>
+        </div>
     <script>
 
+        // Assign Admin
         function assignAdmin(companyId){
             document.getElementById('hideCompanyId').style.display = "none";
             let companyIdObj = document.getElementById('companyId');
@@ -153,8 +176,27 @@
 
         }
 
-        // Start : Active and Inactive button behaviour
+        // Fetch admin Details
+        function adminDetails(companyId){
+            $.ajax({
+                url: "<?= base_url('SuperAdminController/getCompanyAdmin') ?>",
+                type: 'POST',
+                data: {
+                    companyId : companyId,
+                },
+                success: function(response) {
+                    response = JSON.parse(response);
+                    document.getElementById('adminNameId').innerHTML = response['name'];
+                    document.getElementById('adminPhoneId').innerHTML = response['phone'];
+                    document.getElementById('adminEmailId').innerHTML = response['email'];
+                    document.getElementById('adminAddressId').innerHTML = response['address'];
+                    $('#adminInfoModal').modal({backdrop: 'static', keyboard: false});
+                    $('#adminInfoModal').modal('show');
+                }
+            })
+        }
 
+        // Start : Active and Inactive button behaviour
         function activeInActiveCompany(companyId, isActive){
             $.ajax({
                 url: "<?= base_url('SuperAdminController/activeInActiveCompany') ?>",
@@ -290,5 +332,5 @@
         }
 
     </script>
-
+    </body>
 </html>

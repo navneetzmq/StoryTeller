@@ -16,18 +16,28 @@
                 </button>'
                 .$this->session->flashdata('add_company_admin') . '</p>'; ?>
                 <?php } $this->session->unset_userdata('add_company_admin'); //unset session ?>
-
+                
                 <div class="card">
                     <div class="card-body">
                     <!-- form -->
                         <form method="POST" name="questionForm" action="<?= base_url('SuperAdminController/saveQuestionData');?>" enctype="multipart/form-data">
 
+                            <!-- Select Story or Generic to create question -->
+                            <div class="form-group" id="isGenericAreaId">
+                                <label for=""><strong>Create Question for: Story or Generic ?</strong></label>
+                                <select id="isGenericId" name="isGeneric" class="form-control">
+                                    <option value="">Please Select</option>
+                                    <option value="1">Add question for Generic</option>
+                                    <option value="0">Add question for Story</option>
+                                </select>
+                                <div id="err_isGeneric"></div>
+                            </div>
+
                             <!-- Dropdown to select Story -->
-                            
-                            <div class="form-group">
-                                <label id="labelId" for="">Select Story</label>
+                            <div class="form-group" id="storyAreaId">
+                                <label id="labelId" for=""><strong>Select Story</strong></label>
                                 <select id="storyId" name="storyId" class="form-control">
-                                    <option value="" selected>Select Story</option>
+                                    <option value="0">Select Story</option>
 
                                     <?php 
                                     if(isset($storyData) && !empty($storyData)){
@@ -41,8 +51,30 @@
                                                 </option>
                                     <?php }} ?>
                                 </select>
-                                <div id="err_story"></div>
                             </div>
+
+                            <!-- If No Story Available -->
+                            <strong><p id="noStory" style="color:red; text-align:center"></p></strong>
+
+                            <!-- Dropdown to select Generic -->
+                            <div class="form-group" id="genericAreaId">
+                                <label id="labelId" for=""><strong>Select Generic</strong></label>
+                                <select id="genericId" name="genericId" class="form-control">
+                                    <option value="0">Select Generic</option>
+                                    <?php 
+                                    if(isset($genericData) && !empty($genericData)){
+                                        for($i = 0 ; $i < count($genericData); $i++) { ?>
+                                            <?php if(isset($genericData[$i]->genericId)){ ?>
+                                                <option value="<?= $genericData[$i]->genericId; ?>">
+                                                <?= $genericData[$i]->genericTitle; ?>
+                                            <?php }?>
+                                                </option>
+                                    <?php }} ?>
+                                </select>
+                            </div>
+
+                            <!-- If No Generic Available -->
+                            <strong><p id="noGeneric" style="color:red; text-align:center;"></p></strong>
 
                             <div id="hideForm">
                                 <!-- Question text -->
@@ -65,7 +97,7 @@
                                         <input type="file" accept="audio/*" class="form-control-file form-control-sm" name="questionAudio" id="questionAudio">
                                     </div>
                                 </div>
-
+                                
                                 <!-- How many Options the Question has ? -->
                                 <div class="form-group" id="radioBtn">
                                     <label for=""><strong>Number of options to answer?</strong></label>
@@ -175,7 +207,6 @@
                                             <div id="err_optAudioId2"></div>
                                         </div>
                                     </div>
-                            
 
                                 <!-- Option C Text -->
                                 <label for="" id="optLabelId3"><strong>Option-C</strong></label>
@@ -352,7 +383,7 @@
                                 <div class='row'>
                                     <div class="col-auto float-right"> 
                                         <input type="button" id="preBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Pre Question" onclick='loadForm()'>
-                                    </div>  
+                                    </div>
 
                                     <div class="col-auto float-right"> 
                                         <input type="button" id="postBtn" class="btn btn-primary btn-user btn-block btn-sm" value="Add Post Question" onclick='loadForm()'>
@@ -374,19 +405,58 @@ var isPre;
 var isMCQ;
 var hasScoreValue;
 var optFormat;
+var isGeneric;
+
+let genericJson = `<?php echo json_encode($genericData)?>`; // Converting php array to JSON String
+let genericData = JSON.parse(genericJson); // Converting JSON to JS object
+let storyJson = `<?php echo json_encode($storyData)?>`; // Converting php array to JSON String
+let storyData = JSON.parse(storyJson); // Converting JSON to JS object
 
 // On page load
+document.getElementById('genericAreaId').style.display = 'none';
+document.getElementById('storyAreaId').style.display = 'none';
 
 document.getElementById('isPreValueId').style.display = 'none';
 document.getElementById('hideForm').style.display = 'none';
 document.getElementById('preBtn').style.display = 'none';
 document.getElementById('postBtn').style.display = 'none';
 
+// When we select "Add question for Story/Generic"
+$('#isGenericId').on('change', function(){
+    isGeneric = this.value;
+    var genericLength = genericData.length;
+    var storyLength = storyData.length;
+    if(isGeneric == 1){
+        if(genericLength > 0){
+            document.getElementById('genericAreaId').style.display = 'block';
+            document.getElementById('isGenericAreaId').style.display = 'none';
+            document.getElementById('noStory').innerHTML = "";
+        }
+        else{
+            document.getElementById('genericAreaId').style.display = 'none';
+            document.getElementById('isGenericAreaId').style.display = 'block';
+            document.getElementById('noGeneric').innerHTML = "No Generic availabe!";
+        }
+    }
+    else{
+        if(storyLength > 0){
+            document.getElementById('storyAreaId').style.display = 'block';
+            document.getElementById('isGenericAreaId').style.display = 'none';
+            document.getElementById('noGeneric').innerHTML = "";
+        }
+        else{
+            document.getElementById('storyAreaId').style.display = 'none';
+            document.getElementById('isGenericAreaId').style.display = 'block';
+            document.getElementById('noStory').innerHTML = "No Story available!";
+        }
+    }
+});
+
 // When we select a Story
 $('#storyId').on('change', function(){
 
     var storyId = this.value;
-
+    alert(storyId);
     $.ajax({
         url: "<?= base_url('SuperAdminController/checkStoryHasPreQues') ?>",
         type: 'POST',
@@ -412,8 +482,16 @@ $('#storyId').on('change', function(){
     })
 });
 
+// When we select a Generic
+$('#genericId').on('change', function(){
+    var genericId = this.value;
+    alert(genericId);
+    document.getElementById('genericAreaId').style.display = 'none';
+    loadForm();
+});
+
 $("#preBtn").on('click', function(){
-    isPre = "1";
+    isPre = "1";    
     document.getElementById('isPreValueId').value = isPre;
 });
 
@@ -462,7 +540,7 @@ function loadForm(){
 
 // When select, How many options the question has
 
-function openOptionField(radioValue){   
+function openOptionField(radioValue){
     numOfOptions = radioValue;
     document.getElementById('radioBtn').style.display = 'none';
     document.getElementById('optionFormatRadioBtn').style.display = 'block';
@@ -579,7 +657,6 @@ $('#quesTypeId').on('change', function(){
     }
     
     // Multiple Choice
-
     if(isMCQ == 1){
         document.getElementById('selectAnsRadioId').style.display = 'none';
         document.getElementById('ansRadioId1').style.display = 'none';
@@ -620,7 +697,6 @@ $('#quesTypeId').on('change', function(){
 // ------------- The Form validation -----------
 
 function createQuesValidation(){
-
     // Question Text
     var question = document.getElementById("questionId").value;
     var err_question = document.getElementById("err_question");

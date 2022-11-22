@@ -16,16 +16,23 @@ class OpenPlayerModel extends CI_Model {
         
     }
 
+    // getting all  geneircs
+    public function getAllGeneric(){
+        $this->db->select('genericId, genericTitle')
+            ->from('masterGeneric')
+            ->where('isActive', 1);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
     // Store open Player data
 
     public function storeOpenPlayerData($openData){
-
         $this->db->insert('openPlayer', $openData);
-
     }
 
     // Get all questions by StoryId
-    public function getQuestions($storyId){
+    public function getStoryQuestions($storyId){
         $this->db->select('*')
             ->from('questionBank')
             ->where('storyId', $storyId);
@@ -33,9 +40,20 @@ class OpenPlayerModel extends CI_Model {
         return $query->result_array();
     }
 
+    // Get all questions by GenericId
+    public function getGenericQuestions($genericId){
+        $this->db->select('*')
+            ->from('questionBank')
+            ->where('genericId', $genericId);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
     // To save Test data in openPlayerInput table
     public function saveTestData($testData){
         $length = count($testData);
+        // var_dump($testData);
+        // die();
         $status = $this->saveMultipleRows($testData);
         if($status == $length){
             return true;
@@ -61,22 +79,29 @@ class OpenPlayerModel extends CI_Model {
         $length = count($statusArr);
         $score = 0;
         $countCorrect = 0;
+        $title = 0;
         for($i = 0; $i < $length; $i++){
             if($statusArr[$i]->status){
                 $score += $decodedData[$i]['score'];
                 $countCorrect++;
             }
         }
+        $storyId = $decodedData[0]['storyId'];
+        $genericId = $decodedData[0]['genericId'];
         // Story Title
-        $storyTitle = $this->storyTitle($decodedData[0]['storyId']);
+        if($storyId != 0){
+            $title = $this->storyTitle($decodedData[0]['storyId']);
+        }
+        else if($genericId != 0){
+            $title = $this->genericTitle($decodedData[0]['genericId']);
+        }
         // Player name
         $playerName = $this->playerName($decodedData[0]['palyerId']);
         $resultData = array();
         $resultData['score'] = $score;
-        $resultData['storyTitle'] = $storyTitle;
+        $resultData['storyTitle'] = $title;
         $resultData['playerName'] = $playerName;
         $resultData['countCorrect'] = $countCorrect;
-
         return $resultData;
     }
 
@@ -123,6 +148,15 @@ class OpenPlayerModel extends CI_Model {
         return ($query->result_array()[0]['storyTitle']);
     }
 
+    // To get generic title
+    private function genericTitle($genericId){
+        $this->db->select('genericTitle')
+            ->from('masterGeneric')
+            ->where('genericId', $genericId);
+        $query = $this->db->get();
+        return ($query->result_array()[0]['genericTitle']);
+    }
+
     // To get Player name
     private function playerName($palyerId){
         $this->db->select('name')
@@ -130,5 +164,14 @@ class OpenPlayerModel extends CI_Model {
             ->where('playerId', $palyerId);
         $query = $this->db->get();
         return ($query->result_array()[0]['name']);
+    }
+
+    // To get rules for story or generic
+    public function getRulesData($storyId){
+        $this->db->select('*')
+            ->from('testLayout')
+            ->where('storyId', $storyId);
+        $query = $this->db->get();
+        return ($query->result_array()[0]);
     }
 }

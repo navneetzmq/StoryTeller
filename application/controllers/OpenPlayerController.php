@@ -20,11 +20,12 @@ class OpenPlayerController extends CI_Controller {
 
         // $this->session->sess_destroy();
 
-        $storyData['story'] = $this->OpenPlayerModel->getPublicStories();
+        $storyGeneric['story'] = $this->OpenPlayerModel->getPublicStories();
+        $storyGeneric['generic'] = $this->OpenPlayerModel->getAllGeneric();
 
         $this->load->view('universal/uniHeader');
         $this->load->view('universal/uniMainBody');
-        $this->load->view('universal/openPlayer', $storyData);
+        $this->load->view('universal/openPlayer', $storyGeneric);
         $this->load->view('universal/uniFooter');
 
     }
@@ -33,7 +34,15 @@ class OpenPlayerController extends CI_Controller {
 
     public function saveOpenPlayerData(){
         $openData['playerId'] = (string)rand();
-        $openData['storyId'] = $this->input->post('storyId');
+        $storyOrGeneric = $this->input->post('storyOrGeneric');
+        if($storyOrGeneric == 1){
+            $openData['storyId'] = $this->input->post('storyId');
+            $openData['genericId'] = '0';
+        }
+        else{
+            $openData['genericId'] = $this->input->post('genericId');
+            $openData['storyId'] = '0';
+        }
         $openData['name'] = $this->input->post('openName');
         $openData['phone'] = $this->input->post('openNumber');       
         $openData['email'] = $this->input->post('openEmail');
@@ -42,14 +51,23 @@ class OpenPlayerController extends CI_Controller {
 
         // Saving open player data
         $this->OpenPlayerModel->storeOpenPlayerData($openData);
-
-        // Get all questions for selected(by Open player) story
-        $questions['quesData'] = $this->OpenPlayerModel->getQuestions($openData['storyId']);
+        if($storyOrGeneric == 1){
+            // Get all questions for selected(by Open player) story
+            $questions['quesData'] = $this->OpenPlayerModel->getStoryQuestions($openData['storyId']);
+            $questions['storyId'] = $openData['storyId'];
+            $questions['storyOrGeneric'] = $storyOrGeneric;
+        }
+        else{
+            // Get all questions for selected(by Open player) Generic
+            $questions['quesData'] = $this->OpenPlayerModel->getGenericQuestions($openData['genericId']);
+            $questions['genericId'] = $openData['genericId'];
+            $questions['storyOrGeneric'] = $storyOrGeneric;
+        }
         $questions['playerId'] = $openData['playerId'];
-
+        $questions['rules'] = $this->OpenPlayerModel->getRulesData($openData['storyId']);
         // Load StartTest page
         $this->load->view('universal/startTest', $questions);
-    }   
+    }
 
     // Submitt test data
     public function submitTestdata(){

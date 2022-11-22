@@ -274,7 +274,6 @@ class CompanyAdminController extends CI_Controller {
     public function updateStaffInfo(){
 
         $userData = $this->session->userdata('userData');
-
         $data['name'] = $this->input->post('emp_name');
         $data['phone'] = $this->input->post('emp_phone');
         $data['email'] = $this->input->post('emp_email');
@@ -330,6 +329,78 @@ class CompanyAdminController extends CI_Controller {
         $this->session->set_flashdata('add_company_admin', 'Successfull!, Generic has been Created');
 
         redirect(base_url('generic'));
+    }
+
+    // To load Rule-Book
+    public function loadRuleBook(){
+        $list['storyData'] = $this->CompanyAdminModel->getStoryList();
+        $list['genericData'] = $this->CompanyAdminModel->getGenericList();
+        $this->load->view('universal/uniHeader');
+        $this->load->view('universal/uniMainBody');
+        $this->load->view('universal/ruleBook', $list);
+        $this->load->view('universal/uniFooter');
+    }
+
+    // Fetch data from testLayout table using storyId
+    public function getStoryTestLayout(){
+        $storyId = $this->input->post('storyId');
+        $testLayout = $this->CompanyAdminModel->storyTestLayout($storyId);
+        echo(json_encode($testLayout));
+    }
+
+    // Fetch data from testLayout table using genericId
+    public function getGenericTestLayout(){
+        $genericId = $this->input->post('genericId');
+        $testLayout = $this->CompanyAdminModel->genericTestLayout($genericId);
+        echo(json_encode($testLayout));
+    }
+
+    // Submit ruleBook data
+    public function saveRuleBookData(){
+        $ruleData = array();
+        $storyOrGeneric = $this->input->post('storyOrGeneric');
+        if($storyOrGeneric == '1'){
+            $ruleData['storyId'] = $this->input->post('storyId');
+            $ruleData['genericId'] = "0";
+        }
+        else{
+            $ruleData['genericId'] = $this->input->post('genericId');
+            $ruleData['storyId'] = "0";
+        }
+        if($this->input->post('ansStatus') == "1"){
+            $ruleData['showStatus'] = $this->input->post('ansStatus');
+        }
+        else{
+            $ruleData['showStatus'] = "0";
+        }
+        if($this->input->post('reviewAns') == "1"){
+            $ruleData['allowPrevious'] = $this->input->post('reviewAns');
+        }
+        else{
+            $ruleData['allowPrevious'] = "0";
+        }
+        if($this->input->post('testTime') == "1"){
+            $ruleData['testTime'] = $this->input->post('testTime');    
+        }
+        else{
+            $ruleData['testTime'] = "0";
+        }
+        if($this->input->post('scoreBase') == "1"){
+            $ruleData['distinctScore'] = $this->input->post('scoreBase');
+        }
+        else{
+            $ruleData['distinctScore'] = "0";
+        }
+        if($this->input->post('autoplay') == "1"){
+            $ruleData['autoplayAudio'] = $this->input->post('autoplay');
+        }
+        else{
+            $ruleData['autoplayAudio'] = "0";
+        }
+
+        $this->CompanyAdminModel->submitRuleBookData($ruleData);
+        $this->session->set_flashdata('add_company_admin', 'Rules are set Successfully!');
+        redirect(base_url('rules'));
     }
 
 }

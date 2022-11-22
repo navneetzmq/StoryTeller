@@ -11,6 +11,7 @@ class SuperAdminController extends CI_Controller {
         $this->load->model('LoginModel');
         $this->load->model('SuperAdminModel');
         $this->load->model('CompanyAdminModel');
+        $this->load->model('OpenPlayerModel');
         $this->load->library('session');
         $this->load->library('upload');
     
@@ -143,8 +144,7 @@ class SuperAdminController extends CI_Controller {
         $staffId = $userData['staffId'];
 
         $storyData['storyData'] = $this->SuperAdminModel->getStoryData($staffId);
-
-        // var_dump($storyData);
+        $storyData['genericData'] = $this->SuperAdminModel->getGenericData($staffId);
 
         if(isset($userData)){
             $this->load->view('universal/uniHeader');
@@ -155,7 +155,6 @@ class SuperAdminController extends CI_Controller {
         else{
             echo("Error in Story creation");
         }
-
     }
 
     // To save question data in questionBank table
@@ -163,6 +162,8 @@ class SuperAdminController extends CI_Controller {
     public function saveQuestionData(){
 
         $userData = $this->session->userdata('userData');
+        $questionData['storyId'] = $this->input->post('storyId');   
+        $questionData['genericId'] = $this->input->post('genericId');
         $questionData['storyId'] = $this->input->post('storyId');
         $questionData['isPre'] = $this->input->post('isPreValue');
         $questionData['companyId'] = $userData['companyId'];            
@@ -207,7 +208,7 @@ class SuperAdminController extends CI_Controller {
             }
         }
         $questionData['optNmbrForAns'] = trim($questionData['optNmbrForAns'],",");
-        
+
         $this->SuperAdminModel->storeQuestionData($questionData);
 
         $this->session->set_flashdata('add_company_admin', 'Successfull!, Question has been added to Story');
@@ -217,7 +218,6 @@ class SuperAdminController extends CI_Controller {
 
     // Upload Image
     private function uploadImageFile($name){
-
         $config['upload_path'] = './assets/uploadedData/images/';
         $config['allowed_types'] = 'gif|jpg|png|jpeg';
         $config['max_size'] = 0;
@@ -230,6 +230,7 @@ class SuperAdminController extends CI_Controller {
             return $path;
         }
         else{
+            // var_dump($this->upload->display_errors());
             return "";
         }
     }
@@ -254,8 +255,172 @@ class SuperAdminController extends CI_Controller {
         }  
     }
 
-    // To see company list for superAdmin
+    // Load edit question page
+    public function editQuestion(){
+        $userData = $this->session->userdata('userData');
+        $staffId = $userData['staffId'];
+        $storyData['storyData'] = $this->SuperAdminModel->getStoryData($staffId);
+        $storyData['genericData'] = $this->SuperAdminModel->getGenericData($staffId);
 
+        if(isset($userData)){
+            $this->load->view('universal/uniHeader');
+            $this->load->view('universal/uniMainBody');
+            $this->load->view('universal/editQuestion', $storyData);
+            $this->load->view('universal/uniFooter');
+        }
+        else{
+            echo("Error in Story creation");
+        }
+    }
+
+    // Get story questions of particullar company
+    public function getStoryQuestions(){
+        $userData = $this->session->userdata('userData');
+        $staffId = $userData['staffId'];
+        $storyId = $this->input->post('storyId');
+        $storyQues = $this->OpenPlayerModel->getStoryQuestions($storyId);
+        echo (json_encode($storyQues));
+    }
+
+    public function getGenericQuestions(){
+        $userData = $this->session->userdata('userData');
+        $staffId = $userData['staffId'];
+        $genericId = $this->input->post('genericId');
+        $genericQues = $this->OpenPlayerModel->getGenericQuestions($genericId);
+        echo (json_encode($genericQues));
+    }
+
+    // To get Single Question Data
+    public function getQuestionData(){
+        $quesId = $this->input->post('questionId');
+        $quesData = $this->SuperAdminModel->getQuestionData($quesId);
+        echo(json_encode($quesData));
+    }
+
+    // To save Editted question data
+    public function saveUpdatedQuesData(){
+        $userData = $this->session->userdata('userData');
+        $quesId = $this->input->post('quesId');
+        // $isOptChanged = $this->input->post('changeOptFormat');
+        $optFormat = $this->input->post('optionFormat');
+        $updatedQuesData['isActive'] = $this->input->post('activeInactive');
+        $updatedQuesData['isPre'] = $this->input->post('prePost');
+        $updatedQuesData['qText'] = $this->input->post('question');        
+        if($this->uploadImageFile('questionImage') != ""){
+            $updatedQuesData['qImage'] = $this->uploadImageFile('questionImage');
+        }
+        else{
+            $updatedQuesData['qImage'] = $this->input->post('currQuesImg');
+        }
+        $updatedQuesData['qAudio'] = $this->uploadAudioFile('questionAudio');
+        $updatedQuesData['isMCQ'] = $this->input->post('quesType');
+        $updatedQuesData['opt1'] = $this->input->post('optA');
+        if(($optFormat == "2") || ($optFormat == "3") || ($optFormat == "5") || ($optFormat == "6")){
+            $imgPath1 = $this->uploadImageFile('optAImage');
+            if($imgPath1 != ""){
+                $updatedQuesData['optImage1'] = $imgPath1;
+            }
+            else{
+                $updatedQuesData['optImage1'] = $this->input->post('img1');
+            }
+        }
+        else{
+            $updatedQuesData['optImage1'] = "";
+        }
+        $updatedQuesData['optAudio1'] = $this->uploadAudioFile('optAAudio');
+        $updatedQuesData['opt2'] = $this->input->post('optB');
+        if(($optFormat == "2") || ($optFormat == "3") || ($optFormat == "5") || ($optFormat == "6")){
+            $imgPath2 = $this->uploadImageFile('optBImage');
+            if($imgPath2 != ""){
+                $updatedQuesData['optImage2'] = $imgPath2;
+            }
+            else{
+                $updatedQuesData['optImage2'] = $this->input->post('img2');
+            }
+        }
+        else{
+            $updatedQuesData['optImage2'] = "";
+        }
+        $updatedQuesData['optAudio2'] = $this->uploadAudioFile('optBAudio');
+        $updatedQuesData['opt3'] = $this->input->post('optC');
+        if(($optFormat == "2") || ($optFormat == "3") || ($optFormat == "5") || ($optFormat == "6")){
+            $imgPath3 = $this->uploadImageFile('optCImage');
+            if($imgPath3 != ""){
+                $updatedQuesData['optImage3'] = $imgPath3;
+            }
+            else{
+                $updatedQuesData['optImage3'] = $this->input->post('img3');
+            }
+        }
+        else{
+            $updatedQuesData['optImage3'] = "";
+        }
+        $updatedQuesData['optAudio3'] = $this->uploadAudioFile('optCAudio');
+        $updatedQuesData['opt4'] = $this->input->post('optD');
+        if(($optFormat == "2") || ($optFormat == "3") || ($optFormat == "5") || ($optFormat == "6")){
+            $imgPath4 = $this->uploadImageFile('optDImage');
+            if($imgPath4 != ""){
+                $updatedQuesData['optImage4'] = $imgPath4;
+            }
+            else{
+                $updatedQuesData['optImage4'] = $this->input->post('img4');
+            }
+        }
+        else{
+            $updatedQuesData['optImage4'] = "";
+        }
+        $updatedQuesData['optAudio4'] = $this->uploadAudioFile('optDAudio');
+        $updatedQuesData['opt5'] = $this->input->post('optE');
+        if(($optFormat == "2") || ($optFormat == "3") || ($optFormat == "5") || ($optFormat == "6")){
+            $imgPath5 = $this->uploadImageFile('optEImage');
+            if($imgPath5 != ""){
+                $updatedQuesData['optImage5'] = $imgPath5;
+            }
+            else{
+                $updatedQuesData['optImage5'] = $this->input->post('img5');
+            }
+        }
+        else{
+            $updatedQuesData['optImage5'] = "";
+        }
+        $updatedQuesData['optAudio5'] = $this->uploadAudioFile('optEAudio');
+        $updatedQuesData['weight'] = $this->input->post('weight');
+        if($updatedQuesData['weight'] == 0){
+            $updatedQuesData['hasScore'] = 0;
+        }
+        else{
+            $updatedQuesData['hasScore'] = 1;
+        }
+        // $updatedQuesData['isActive'] = '1';
+        // $updatedQuesData['createdBy'] = $userData['staffId'];
+        $singleAns = $this->input->post('selectAnsRadio');
+        $noOfOptions = $this->input->post('option');
+        $quesType = $this->input->post('quesType');
+        $updatedQuesData['optNmbrForAns'] = "";
+
+        if($quesType == 0){
+            $updatedQuesData['optNmbrForAns'] = $singleAns;
+        }
+        else{
+            for($i = 0; $i < $noOfOptions; $i++){
+                $multyAns = $this->input->post('ansCid'.($i+1));
+                if($multyAns){
+                    $updatedQuesData['optNmbrForAns'] .= $multyAns;
+                    $updatedQuesData['optNmbrForAns'] .= ",";
+                }
+            }
+        }
+
+        $updatedQuesData['optNmbrForAns'] = trim($updatedQuesData['optNmbrForAns'],",");
+
+        $this->SuperAdminModel->editQuesData($updatedQuesData, $quesId);
+
+        $this->session->set_flashdata('add_company_admin', 'Successfull!, Question Updated!');
+
+        redirect(base_url('editQues'));
+    }
+
+    // To see company list for superAdmin
     public function companyList(){
 
         $userData = $this->session->userdata('userData');
@@ -266,7 +431,7 @@ class SuperAdminController extends CI_Controller {
             $this->load->view('universal/uniHeader');
             $this->load->view('universal/uniMainBody');
             $this->load->view('superAdmin/companyList', $companies);
-            $this->load->view('universal/uniFooter');
+            // $this->load->view('universal/uniFooter');
         }
         else{
             echo("Error in Story creation");
@@ -292,6 +457,14 @@ class SuperAdminController extends CI_Controller {
 
         echo $isActive;
 
+    }
+
+    // Get Company admin details using companyId
+    public function getCompanyAdmin(){
+        // companyId isActive
+        $companyId = $this->input->post('companyId');
+        $adminInfo = $this->SuperAdminModel->getCompanyAdmin($companyId);
+        echo(json_encode($adminInfo));
     }
 }
 

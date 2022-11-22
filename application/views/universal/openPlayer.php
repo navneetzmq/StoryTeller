@@ -20,7 +20,7 @@
                 <div class="card">
                     <div class="card-body">
 
-                    <!-- <//?php var_dump($story)?> -->
+                    <!-- </?php var_dump($generic)?> -->
 
                     <!-- form -->
                     <form method="POST" action="<?= base_url('OpenPlayerController/saveOpenPlayerData');?>">
@@ -42,9 +42,19 @@
                             <div id="err_openEmail"></div>
                         </div>
 
-                        <!-- Dropdown to select Story to Play -->
+                        <!-- Select Story or Generic to create question -->
+                        <div class="form-group" id="storyOrGenericAreaId">
+                            <label for=""><strong>Test for : Story or Generic ?</strong></label>
+                            <select id="storyOrGenericId" name="storyOrGeneric" class="form-control">
+                                <option value="">Please Select</option>
+                                <option value="1">Play Story</option>
+                                <option value="0">Play Generic</option>
+                            </select>
+                            <div id="err_storyOrGeneric"></div>
+                        </div>
                         
-                        <div class="form-group">
+                        <!-- Dropdown to select Story to Play -->
+                        <div id="storyArea" class="form-group">
                         <label for="">Select Story</label>
                         <select id="storyId" name="storyId" class="form-control">
                             <option value='' selected>Select Story to Play</option>
@@ -58,6 +68,23 @@
                                 <?php }} ?>
                         </select>
                         <div id="err_story"></div>
+                        </div>
+                        
+                        <!-- Dropdown to select Generic to Play -->
+                        <div id="genericArea" class="form-group">
+                        <label for="">Select Generic</label>
+                        <select id="genericId" name="genericId" class="form-control">
+                            <option value='' selected>Select generic to Play</option>
+                                <?php
+                                if(isset($generic) && !empty($generic)){
+                                    for($i = 0 ; $i < count($generic); $i++) { ?>
+                                        <?php if(isset($generic[$i]->genericId)){ ?>
+                                            <option value="<?= $generic[$i]->genericId; ?>"><?= $generic[$i]->genericTitle; ?>
+                                    <?php }?>
+                                            </option>
+                                <?php }} ?>
+                        </select>
+                        <div id="err_generic"></div>
                         </div>
 
                         <div class="form-group">
@@ -82,123 +109,140 @@
     </div>
 
     <script>
+
+        document.getElementById('storyArea').style.display = 'none';
+        document.getElementById('genericArea').style.display = 'none';
+
+        $('#storyOrGenericId').on('change', function(){
+            var storyOrGeneric = this.value;
+            // alert(storyOrGeneric);
+            if(storyOrGeneric == 1){
+                document.getElementById('genericArea').style.display = 'none';
+                document.getElementById('storyArea').style.display = 'block';
+            }
+            else{
+                document.getElementById('storyArea').style.display = 'none';
+                document.getElementById('genericArea').style.display = 'block';
+            }
+        })
+
         function validateOpenPlayer()
         {
-            var openName = document.getElementById("openNameId").value;
-            var err_openName = document.getElementById("err_openName");
-            var patternOpenName = /([a-zA-Z ]){3,15}$/g;
+            // var openName = document.getElementById("openNameId").value;
+            // var err_openName = document.getElementById("err_openName");
+            // var patternOpenName = /([a-zA-Z ]){3,15}$/g;
 
-            if(openName.match(patternOpenName))
-            {
-                // err_openName.style.fontSize = "12px";
-                // err_openName.style.color = "green"; 
-                err_openName.innerHTML = "";                                
-            }else{           
-                document.getElementById("openNameId").focus();      
-                err_openName.style.color = "red";
-                err_openName.style.fontSize = "12px";                                
-                err_openName.innerHTML = "Wrong";
-                return false;
-            }
+            // if(openName.match(patternOpenName))
+            // {
+            //     // err_openName.style.fontSize = "12px";
+            //     // err_openName.style.color = "green"; 
+            //     err_openName.innerHTML = "";                                
+            // }else{           
+            //     document.getElementById("openNameId").focus();      
+            //     err_openName.style.color = "red";
+            //     err_openName.style.fontSize = "12px";                                
+            //     err_openName.innerHTML = "Wrong";
+            //     return false;
+            // }
 
-            //Contact person number
+            // //Contact person number
 
-            var openNumber = document.getElementById('openNumberId').value;
-            var err_openNumber = document.getElementById('err_openNumber');
-            var patternOpenNumber = /([0-9-+]){8,12}$/g;
+            // var openNumber = document.getElementById('openNumberId').value;
+            // var err_openNumber = document.getElementById('err_openNumber');
+            // var patternOpenNumber = /([0-9-+]){8,12}$/g;
 
-            if(openNumber.match(patternOpenNumber))
-            {              
-                // err_openNumber.style.fontSize = "12px";
-                // err_openNumber.style.color = "green"; 
-                err_openNumber.innerHTML = "";    
+            // if(openNumber.match(patternOpenNumber))
+            // {              
+            //     // err_openNumber.style.fontSize = "12px";
+            //     // err_openNumber.style.color = "green"; 
+            //     err_openNumber.innerHTML = "";    
 
-            }else{            
-                document.getElementById("openNumberId").focus();        
-                err_openNumber.style.fontSize = "12px";                          
-                err_openNumber.style.color = "red";
-                err_openNumber.innerHTML = "Wrong";  
-                return false;                
-            }
+            // }else{            
+            //     document.getElementById("openNumberId").focus();        
+            //     err_openNumber.style.fontSize = "12px";                          
+            //     err_openNumber.style.color = "red";
+            //     err_openNumber.innerHTML = "Wrong";  
+            //     return false;                
+            // }
 
-            //Email Address
-            var openEmail = document.getElementById('openEmailId').value;
-            var err_openEmail = document.getElementById("err_openEmail");
-            var patternOpenEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g;
+            // //Email Address
+            // var openEmail = document.getElementById('openEmailId').value;
+            // var err_openEmail = document.getElementById("err_openEmail");
+            // var patternOpenEmail = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/g;
             
-            if(openEmail.match(patternOpenEmail))
-            {
+            // if(openEmail.match(patternOpenEmail))
+            // {
                 
-                // err_openEmail.style.fontSize = "12px";
-                // err_openEmail.style.color = "green"; 
-                err_openEmail.innerHTML = "";    
+            //     // err_openEmail.style.fontSize = "12px";
+            //     // err_openEmail.style.color = "green"; 
+            //     err_openEmail.innerHTML = "";    
                                        
-            }else{
-                document.getElementById("openEmailId").focus();
-                err_openEmail.style.fontSize = "12px";                      
-                err_openEmail.style.color = "red";
-                err_openEmail.innerHTML = "Wrong";
-                return false;
-            }
+            // }else{
+            //     document.getElementById("openEmailId").focus();
+            //     err_openEmail.style.fontSize = "12px";                      
+            //     err_openEmail.style.color = "red";
+            //     err_openEmail.innerHTML = "Wrong";
+            //     return false;
+            // }
 
-            // Dropdown validations
+            // // Dropdown validations
             
-            var e = document.getElementById("storyId");
-            var err_story = document.getElementById('err_story');
+            // var e = document.getElementById("storyId");
+            // var err_story = document.getElementById('err_story');
            
-            var optionSelIndex = e.options[e.selectedIndex].value;
-            var optionSelectedText = e.options[e.selectedIndex].text;
+            // var optionSelIndex = e.options[e.selectedIndex].value;
+            // var optionSelectedText = e.options[e.selectedIndex].text;
            
-            if (optionSelIndex == '') {
-                document.getElementById("storyId").focus();
-                  err_story.style.color = "red";
-                  err_story.style.fontSize = "12px";
-                  err_story.innerHTML = "Wrong";
-                return false;
-            } else {
-                //alert("Success !! You have selected Category : " + optionSelectedText); ;  
+            // if (optionSelIndex == '') {
+            //     document.getElementById("storyId").focus();
+            //       err_story.style.color = "red";
+            //       err_story.style.fontSize = "12px";
+            //       err_story.innerHTML = "Wrong";
+            //     return false;
+            // } else {
+            //     //alert("Success !! You have selected Category : " + optionSelectedText); ;  
                         
-                // err_story.style.color = "green"; 
-                // err_story.style.fontSize = "12px";
-                err_story.innerHTML = "";  
+            //     // err_story.style.color = "green"; 
+            //     // err_story.style.fontSize = "12px";
+            //     err_story.innerHTML = "";  
                     
-            }
+            // }
 
-            //Date of Birth
-            var openDOB = document.getElementById('openDOBId').value;
-            var err_openDOB = document.getElementById("err_openDOB");
-            var patternDOB = /^([0-9]{2})-([0-9]{2})-([0-9]{4})$/g;
+            // //Date of Birth
+            // var openDOB = document.getElementById('openDOBId').value;
+            // var err_openDOB = document.getElementById("err_openDOB");
+            // var patternDOB = /^([0-9]{2})-([0-9]{2})-([0-9]{4})$/g;
             
-            if(openDOB.match(patternDOB))
-            {
-                // err_openDOB.style.fontSize = "12px";
-                // err_openDOB.style.color = "green"; 
-                err_openDOB.innerHTML = "";
+            // if(openDOB.match(patternDOB))
+            // {
+            //     // err_openDOB.style.fontSize = "12px";
+            //     // err_openDOB.style.color = "green"; 
+            //     err_openDOB.innerHTML = "";
                          
-            }else{
-                document.getElementById("openDOBId").focus();
-                err_openDOB.style.fontSize = "12px";                      
-                err_openDOB.style.color = "red";
-                err_openDOB.innerHTML = "Supported Format: DD-MM-YYYY";
-                return false;          
-            }
+            // }else{
+            //     document.getElementById("openDOBId").focus();
+            //     err_openDOB.style.fontSize = "12px";                      
+            //     err_openDOB.style.color = "red";
+            //     err_openDOB.innerHTML = "Supported Format: DD-MM-YYYY";
+            //     return false;          
+            // }
 
-            //Address
-            var openAdd = document.getElementById('openAddId').value;
-            var err_openAdd = document.getElementById('err_openAdd');
-            var patternOpenAdd = /([a-zA-Z0-9_-]){3,20}$/g;
+            // //Address
+            // var openAdd = document.getElementById('openAddId').value;
+            // var err_openAdd = document.getElementById('err_openAdd');
+            // var patternOpenAdd = /([a-zA-Z0-9_-]){3,20}$/g;
 
-            if(openAdd.match(patternOpenAdd))
-            {
-                err_openAdd.innerHTML = "";    
+            // if(openAdd.match(patternOpenAdd))
+            // {
+            //     err_openAdd.innerHTML = "";    
  
-            }else{
-                document.getElementById("openAddId").focus();     
-                err_openAdd.style.fontSize = "12px";                      
-                err_openAdd.style.color = "red";
-                err_openAdd.innerHTML = "Wrong";  
-                return false;                
-            }
+            // }else{
+            //     document.getElementById("openAddId").focus();     
+            //     err_openAdd.style.fontSize = "12px";                      
+            //     err_openAdd.style.color = "red";
+            //     err_openAdd.innerHTML = "Wrong";  
+            //     return false;                
+            // }
             return true;
         }
     </script>
